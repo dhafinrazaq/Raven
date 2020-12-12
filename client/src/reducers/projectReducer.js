@@ -1,13 +1,15 @@
 import { bindActionCreators } from "redux";
 import { v4 as uuid } from "uuid";
-import { GET_PROJECTS, ADD_PROJECT, DELETE_PROJECT } from "../actions/types";
+import {
+  GET_PROJECTS,
+  ADD_PROJECT,
+  DELETE_PROJECT,
+  PROJECTS_LOADING,
+} from "../actions/types";
 
 const initialState = {
-  projects: [
-    { id: uuid(), name: "trackr" },
-    { id: uuid(), name: "trackr2" },
-    { id: uuid(), name: "trackr3" },
-  ],
+  projects: [],
+  loading: false,
 };
 
 const reducer = function (state = initialState, action) {
@@ -15,18 +17,25 @@ const reducer = function (state = initialState, action) {
     case GET_PROJECTS:
       return {
         ...state,
+        projects: action.payload,
+        loading: false,
       };
     case DELETE_PROJECT:
       return {
         ...state,
         projects: state.projects.filter(
-          (project) => project.id !== action.payload
+          (project) => project._id !== action.payload
         ),
       };
     case ADD_PROJECT:
       return {
         ...state,
         projects: [action.payload, ...state.projects],
+      };
+    case PROJECTS_LOADING:
+      return {
+        ...state,
+        loading: true,
       };
     default:
       return state;

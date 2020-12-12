@@ -34,7 +34,6 @@ export class ProjectModal extends Component {
     e.preventDefault();
 
     const newProject = {
-      id: uuid(),
       name: this.state.name,
     };
 
@@ -82,7 +81,7 @@ export class ProjectModal extends Component {
 }
 
 const mapsStateToProps = (state) => ({
-  item: state.item,
+  project: state.project,
 });
 
 export default connect(mapsStateToProps, { addProject })(ProjectModal);

@@ -20,13 +20,13 @@ export class ProjectList extends Component {
     return (
       <Container>
         <ListGroup horizontal>
-          {projects.map(({ id, name }) => (
+          {projects.map(({ _id, name }) => (
             <ListGroupItem>
               <Button
                 className="remove-btn"
                 color="danger"
                 size="sm"
-                onClick={this.onDeleteClick.bind(this, id)}
+                onClick={this.onDeleteClick.bind(this, _id)}
               >
                 x
               </Button>

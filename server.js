@@ -10,6 +10,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const { queryParser } = require('express-query-parser');
 const usersRouter = require("./routes/api/users");
+const projectsRouter = require("./routes/api/projects");
 const helmet = require("helmet");
 const compression = require('compression');
 
@@ -69,6 +70,7 @@ mongoose.connect(db, options)
 
 // Routes
 app.use("/api/users", usersRouter);
+app.use("/api/projects", projectsRouter);
 
 // Uses process.env.PORT if available otherwise 5000
 const port = process.env.PORT || 5000;

@@ -1,5 +1,3 @@
-import { bindActionCreators } from "redux";
-import { v4 as uuid } from "uuid";
 import {
   GET_PROJECTS,
   ADD_PROJECT,
@@ -11,6 +9,7 @@ import {
 const initialState = {
   projects: [],
   loading: false,
+  project: {},
 };
 
 const reducer = function (state = initialState, action) {

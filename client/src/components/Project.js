@@ -2,40 +2,26 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { getProject, getProjects } from "../actions/projectActions";
 import { connect } from "react-redux";
+import ProjectNavbar from "./ProjectNavbar";
 
 export class Project extends Component {
   componentDidMount() {
-    // this.props.getProject(this.props.id);
-    // console.log(this.props.project);
-    this.props.getProjects();
+    this.props.getProject(this.props.id);
   }
 
   render() {
-    // const { name } = this.props.project;
-    // console.log(this.props.project.project.name);
-    const { projects } = this.props.project;
+    const { name } = this.props.project.project;
 
     return (
       <div>
-        <h1>hello</h1>
-        <h1>{this.props.id}</h1>
-        {/* <h1>{name}</h1> */}
-        {projects.map(({ _id, name }) => {
-          if (_id === this.props.id) {
-            return (
-              <div>
-                <img
-                  src="https://via.placeholder.com/300.png/09f/fff"
-                  class="figure-img img-fluid mx-auto"
-                  alt="A generic square placeholder image with rounded corners in a figure."
-                  style={{ maxHeight: "100%", maxWidth: "100%" }}
-                ></img>
-
-                <div class="text-center">{name}</div>
-              </div>
-            );
-          }
-        })}
+        <h1 class="text-center">{name}</h1>
+        <img
+          src="https://via.placeholder.com/300.png/09f/fff"
+          class="figure-img img-fluid mx-auto"
+          alt="A generic square placeholder image with rounded corners in a figure."
+          style={{ maxHeight: "100%", maxWidth: "100%" }}
+        ></img>
+        <ProjectNavbar></ProjectNavbar>
       </div>
     );
   }

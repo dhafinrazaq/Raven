@@ -45,6 +45,5 @@ export const getProject = (id) => (dispatch) => {
       type: GET_PROJECT,
       payload: res.data,
     });
-    console.log(res.data);
   });
 };

@@ -18,6 +18,7 @@ export class ProjectModal extends Component {
   state = {
     modal: false,
     name: "",
+    description: "",
   };
 
   toggle = () => {
@@ -35,6 +36,7 @@ export class ProjectModal extends Component {
 
     const newProject = {
       name: this.state.name,
+      description: this.state.description,
     };
 
     //   add project via addProject method
@@ -66,6 +68,14 @@ export class ProjectModal extends Component {
                   name="name"
                   id="project"
                   placeholder="Add project"
+                  onChange={this.onChange}
+                ></Input>
+                <Label for="description">Description</Label>
+                <Input
+                  type="text"
+                  name="description"
+                  id="project"
+                  placeholder="Description"
                   onChange={this.onChange}
                 ></Input>
                 <Button color="dark" style={{ marginTop: "2rem" }} block>

@@ -45,6 +45,9 @@
     "helmet": "^4.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.7",
-    "ramda": "^0.27.1"
+    "ramda": "^0.27.1",
+    "react-redux": "^7.2.2",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0"
   }
 }

@@ -1,59 +1,53 @@
-import React, { Component } from 'react'
-import {
-    Container, ListGroup, ListGroupItem, Button
-} from 'reactstrap'
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { v4 as uuid } from 'uuid';
+import React, { Component } from "react";
+import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
+import { v4 as uuid } from "uuid";
+import { connect } from "react-redux";
+import { getProjects, deleteProject } from "../actions/projectActions";
+import PropTypes from "prop-types";
 
 export class ProjectList extends Component {
-    state = {
-        projects: [
-            {id: uuid(), name: 'trackr'},
-            {id: uuid(), name: 'trackr2'},
-            {id: uuid(), name: 'trackr3'},
-        ]
-    }
-    render() {
-        const { projects } = this.state;
-        return (
-            <Container>
-                <Button 
-                    color="dark" 
-                    style={{marginBottom: '2rem'}} 
-                    onClick={() => {
-                        const name = prompt('Enter project');
-                        if (name) {
-                            this.setState(state => ({
-                                projects: [...state.projects, { id: uuid(), name }]
-                            }));
-                        }
-                    }}>Add Project
-                </Button>
+  componentDidMount() {
+    this.props.getProjects();
+  }
 
-                <ListGroup horizontal>
-                    {/* <TransitionGroup className="project-list"> */}
-                        {projects.map(({ id, name }) => (
-                            // <CSSTransition key={id} timeout={500} classNames="fade">
-                                <ListGroupItem>
-                                    <Button
-                                        className= "remove-btn"
-                                        color="danger"
-                                        size="sm"
-                                        onClick={() => {
-                                            this.setState(state => ({
-                                                projects: state.projects.filter(project => project.id !== id)
-                                            }))
-                                        }}>x
-                                    </Button>
-                                    {name}
-                                </ListGroupItem>
-                            // </CSSTransition>
-                        ))}
-                    {/* </TransitionGroup> */}
-                </ListGroup>
-            </Container>
-        )
-    }
+  onDeleteClick = (id) => {
+    this.props.deleteProject(id);
+  };
+
+  render() {
+    const { projects } = this.props.project;
+
+    return (
+      <Container>
+        <ListGroup horizontal>
+          {projects.map(({ id, name }) => (
+            <ListGroupItem>
+              <Button
+                className="remove-btn"
+                color="danger"
+                size="sm"
+                onClick={this.onDeleteClick.bind(this, id)}
+              >
+                x
+              </Button>
+              {name}
+            </ListGroupItem>
+          ))}
+        </ListGroup>
+      </Container>
+    );
+  }
 }
 
-export default ProjectList
+ProjectList.propTypes = {
+  getProjects: PropTypes.func.isRequired,
+  project: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  project: state.project,
+});
+
+export default connect(mapStateToProps, { getProjects, deleteProject })(
+  ProjectList
+);

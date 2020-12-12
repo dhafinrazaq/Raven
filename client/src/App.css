@@ -1,3 +1,21 @@
 .remove-btn {
   margin-right: 0.5rem;
 }
+
+.project-list {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+
+.project-list-item {
+  display: flex; /* control the items' content */
+  justify-content: center; /* horizontally */
+  align-items: center; /* vertically */
+  /* and some item styling for clarity: */
+
+  outline-offset: -1px;
+  width: 300px;
+  height: 300px;
+  margin: 1em;
+}

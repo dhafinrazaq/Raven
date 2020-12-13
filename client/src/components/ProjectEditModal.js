@@ -52,7 +52,7 @@ export class ProjectModal extends Component {
           style={{ marginBottom: "2rem" }}
           onClick={this.toggle}
         >
-          Edit Project
+          Edit this project
         </Button>
 
         <Modal isOpen={this.state.modal} toggle={this.toggle}>

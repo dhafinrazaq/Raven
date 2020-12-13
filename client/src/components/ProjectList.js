@@ -19,18 +19,11 @@ export class ProjectList extends Component {
 
     return (
       <Container>
+        <h1 class="text-center">Projects List</h1>
         <ul className="project-list">
           {projects.map(({ _id, name }) => (
             <Link to={{ pathname: "/projects/" + _id }} key={_id}>
               <li className="project-list-item">
-                {/* <Button
-                className="remove-btn"
-                color="danger"
-                size="sm"
-                onClick={this.onDeleteClick.bind(this, _id)}
-              >
-                x
-              </Button> */}
                 <figure class="figure">
                   <div class="row">
                     <div class="col-md-8 offset-md-2">
@@ -43,7 +36,7 @@ export class ProjectList extends Component {
                     </div>
                   </div>
 
-                  <div class="text-center">{name}</div>
+                  <h4 class="text-center">{name}</h4>
                 </figure>
               </li>
             </Link>

@@ -18,7 +18,7 @@ export class Project extends Component {
   };
 
   render() {
-    const { name, description } = this.props.project.project;
+    const { name } = this.props.project.project;
 
     return (
       <div>

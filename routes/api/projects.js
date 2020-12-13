@@ -23,7 +23,8 @@ const Project = require("../../models/Project");
 router.get("/", (req, res) => {
   Project.find()
     .sort({ date: -1 })
-    .then((projects) => res.json(projects));
+    .then((projects) => res.json(projects))
+    .catch((err) => res.status(404).json({ success: false }));
 });
 
 // @route POST api/projects

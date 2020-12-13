@@ -29,11 +29,7 @@ export class AppNavbar extends Component {
             <NavbarBrand href="/">Raven</NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
-              <Nav className="ml-auto" navbar>
-                <NavItem>
-                  <NavLink href="https://www.google.com">google</NavLink>
-                </NavItem>
-              </Nav>
+              <Nav className="ml-auto" navbar></Nav>
             </Collapse>
           </Container>
         </Navbar>

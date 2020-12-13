@@ -30,16 +30,6 @@ router.get("/", (req, res) => {
 // @route POST api/projects
 // @desc create a project
 // @access public
-// router.post("/", upload.single("projectImage"), (req, res) => {
-//   const newProject = new Project({
-//     name: req.body.name,
-//     description: req.body.description,
-//     projectImage: req.file.filename,
-//   });
-
-//   newProject.save().then((project) => res.json(project));
-// });
-
 router.post("/", (req, res) => {
   const newProject = new Project({
     name: req.body.name,

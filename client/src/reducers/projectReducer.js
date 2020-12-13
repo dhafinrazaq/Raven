@@ -1,6 +1,7 @@
 import {
   GET_PROJECTS,
   ADD_PROJECT,
+  EDIT_PROJECT,
   DELETE_PROJECT,
   PROJECTS_LOADING,
   GET_PROJECT,
@@ -31,6 +32,12 @@ const reducer = function (state = initialState, action) {
       return {
         ...state,
         projects: [action.payload, ...state.projects],
+      };
+    case EDIT_PROJECT:
+      return {
+        ...state,
+        projects: [action.payload, ...state.projects],
+        project: action.payload,
       };
     case PROJECTS_LOADING:
       return {

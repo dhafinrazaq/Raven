@@ -5,6 +5,7 @@ import {
   DELETE_PROJECT,
   PROJECTS_LOADING,
   GET_PROJECT,
+  EDIT_PROJECT,
 } from "./types";
 
 export const getProjects = () => (dispatch) => {
@@ -52,6 +53,16 @@ export const getProject = (id) => (dispatch) => {
   axios.get(`/api/projects/${id}`).then((res) => {
     dispatch({
       type: GET_PROJECT,
+      payload: res.data,
+    });
+  });
+};
+
+export const editProject = (id, project) => (dispatch) => {
+  axios.put(`/api/projects/${id}`, project).then((res) => {
+    console.log(res.data);
+    dispatch({
+      type: EDIT_PROJECT,
       payload: res.data,
     });
   });

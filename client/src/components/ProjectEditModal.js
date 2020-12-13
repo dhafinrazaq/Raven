@@ -11,14 +11,13 @@ import {
 } from "reactstrap";
 
 import { connect } from "react-redux";
-import { addProject } from "../actions/projectActions";
+import { getProject, editProject } from "../actions/projectActions";
 
 export class ProjectModal extends Component {
   state = {
     modal: false,
-    name: "",
-    description: "",
-    // projectImage: "",
+    name: this.props.project.project.name,
+    description: this.props.project.project.description,
   };
 
   toggle = () => {
@@ -31,35 +30,15 @@ export class ProjectModal extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  // onChangeFile = (e) => {
-  //   this.setState({ ...this.state, projectImage: e.target.files[0] });
-  //   console.log("files");
-  //   console.log(e.target.files);
-  // };
-
   onSubmit = (e) => {
     e.preventDefault();
-
-    // const formData = new FormData();
-    // formData.append("name", this.state.name);
-    // formData.append("description", this.state.description);
-    // formData.append("projectImage", this.state.projectImage);
 
     const newProject = {
       name: this.state.name,
       description: this.state.description,
-      image: this.state.image,
     };
 
-    // console.log("formdata: ");
-    // var object = {};
-    // formData.forEach((value, key) => (object[key] = value));
-    // var json = JSON.stringify(object);
-    // console.log(json);
-
-    //   add project via addProject method
-    // this.props.addProject(formData);
-    this.props.addProject(newProject);
+    this.props.editProject(this.props.project.project._id, newProject);
 
     // close modal
     this.toggle();
@@ -73,11 +52,11 @@ export class ProjectModal extends Component {
           style={{ marginBottom: "2rem" }}
           onClick={this.toggle}
         >
-          Add Project
+          Edit Project
         </Button>
 
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
-          <ModalHeader toggle={this.toggle}>Add To Project List</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Edit Project</ModalHeader>
           <ModalBody>
             <Form onSubmit={this.onSubmit} encType="multipart/form-data">
               <FormGroup>
@@ -86,8 +65,9 @@ export class ProjectModal extends Component {
                   type="text"
                   name="name"
                   id="project"
-                  placeholder="Add project"
+                  placeholder="Project Name"
                   onChange={this.onChange}
+                  value={this.state.name}
                 ></Input>
                 <Label for="description">Description</Label>
                 <Input
@@ -96,21 +76,10 @@ export class ProjectModal extends Component {
                   id="description"
                   placeholder="Description"
                   onChange={this.onChange}
+                  value={this.state.description}
                 ></Input>
-                {/* <FormGroup>
-                  <label for="projectImage">Upload poster</label>
-                  <input
-                    type="file"
-                    id="projectImage"
-                    name="projectImage"
-                    placeholder="image"
-                    onChange={this.onChangeFile}
-                    filename="projectImage"
-                    className="form-control-file"
-                  ></input>
-                </FormGroup> */}
                 <Button color="dark" style={{ marginTop: "2rem" }} block>
-                  Add Project
+                  Edit Project
                 </Button>
               </FormGroup>
             </Form>
@@ -125,4 +94,6 @@ const mapsStateToProps = (state) => ({
   project: state.project,
 });
 
-export default connect(mapsStateToProps, { addProject })(ProjectModal);
+export default connect(mapsStateToProps, { getProject, editProject })(
+  ProjectModal
+);

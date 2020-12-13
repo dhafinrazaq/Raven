@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { getProject, deleteProject } from "../actions/projectActions";
 import { connect } from "react-redux";
 import ProjectNavbar from "./ProjectNavbar";
+import ProjectEditModal from "./ProjectEditModal";
+import ProjectContributorSidebar from "./ProjectContributorSidebar";
 
 export class Project extends Component {
   componentDidMount() {
@@ -16,7 +18,7 @@ export class Project extends Component {
   };
 
   render() {
-    const { name } = this.props.project.project;
+    const { name, description } = this.props.project.project;
 
     return (
       <div>
@@ -29,12 +31,21 @@ export class Project extends Component {
         >
           Delete this project
         </Button>
-        <img
-          src="https://via.placeholder.com/300.png/09f/fff"
-          class="figure-img img-fluid mx-auto"
-          alt="A generic square placeholder image with rounded corners in a figure."
-          style={{ maxHeight: "100%", maxWidth: "100%" }}
-        ></img>
+        <ProjectEditModal></ProjectEditModal>
+        <div class="row">
+          <div class="col-sm-8">
+            <img
+              src="https://via.placeholder.com/300.png/09f/fff"
+              class="figure-img img-fluid mx-auto"
+              alt="A generic square placeholder image with rounded corners in a figure."
+              style={{ maxHeight: "100%", maxWidth: "100%" }}
+            ></img>
+          </div>
+          <div class="col-sm-4">
+            <ProjectContributorSidebar></ProjectContributorSidebar>
+          </div>
+        </div>
+
         <ProjectNavbar></ProjectNavbar>
       </div>
     );

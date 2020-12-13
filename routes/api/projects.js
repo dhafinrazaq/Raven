@@ -68,7 +68,8 @@ router.get("/:id", (req, res) => {
 // @access public
 router.put("/:id", (req, res) => {
   Project.findByIdAndUpdate(req.params.id, req.body, {
-    useFindAndModify: false,
+    returnOriginal: false,
+    new: true,
   })
     .then((project) => res.json(project))
     .catch((err) => res.status(404).json({ success: false }));

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import { Button } from "reactstrap";
 import PropTypes from "prop-types";
-import { getProject, getProjects } from "../actions/projectActions";
+import { getProject, deleteProject } from "../actions/projectActions";
 import { connect } from "react-redux";
 import ProjectNavbar from "./ProjectNavbar";
 
@@ -9,12 +10,25 @@ export class Project extends Component {
     this.props.getProject(this.props.id);
   }
 
+  onDeleteClick = (id) => {
+    this.props.deleteProject(id);
+    window.location.href = "/";
+  };
+
   render() {
     const { name } = this.props.project.project;
 
     return (
       <div>
         <h1 class="text-center">{name}</h1>
+        <Button
+          className="remove-btn"
+          color="danger"
+          size="sm"
+          onClick={() => this.onDeleteClick(this.props.id)}
+        >
+          Delete this project
+        </Button>
         <img
           src="https://via.placeholder.com/300.png/09f/fff"
           class="figure-img img-fluid mx-auto"
@@ -29,6 +43,7 @@ export class Project extends Component {
 
 Project.propTypes = {
   getProject: PropTypes.func.isRequired,
+  deleteProject: PropTypes.func.isRequired,
   project: PropTypes.object.isRequired,
 };
 
@@ -36,4 +51,4 @@ const mapStateToProps = (state) => ({
   project: state.project,
 });
 
-export default connect(mapStateToProps, { getProject, getProjects })(Project);
+export default connect(mapStateToProps, { getProject, deleteProject })(Project);

@@ -15,6 +15,7 @@ const ProjectSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  // projectImage: { type: String, required: true },
 });
 
 module.exports = Project = mongoose.model("project", ProjectSchema);

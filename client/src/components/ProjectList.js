@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
-import { v4 as uuid } from "uuid";
 import { connect } from "react-redux";
 import { getProjects, deleteProject } from "../actions/projectActions";
 import PropTypes from "prop-types";

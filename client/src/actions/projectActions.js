@@ -24,6 +24,15 @@ export const deleteProject = (id) => (dispatch) => {
 };
 
 export const addProject = (project) => (dispatch) => {
+  // const config = {
+  //   headers: {
+  //     "content-type": "multipart/form-data",
+  //   },
+  // };
+
+  console.log("project");
+  console.log(project);
+
   axios.post("/api/projects", project).then((res) =>
     dispatch({
       type: ADD_PROJECT,

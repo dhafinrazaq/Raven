@@ -4,6 +4,7 @@ node_modules
 .DS_Store
 .vscode
 .env
+/public/images
 
 # dependencies
 /client/node_modules

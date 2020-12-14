@@ -6,15 +6,36 @@ import { connect } from "react-redux";
 import ProjectNavbar from "./ProjectNavbar";
 import ProjectEditModal from "./ProjectEditModal";
 import ProjectContributorSidebar from "./ProjectContributorSidebar";
+import Axios from "axios";
 
 export class Project extends Component {
+  state = {
+    name: "",
+    file: null,
+  };
+
   componentDidMount() {
     this.props.getProject(this.props.id);
   }
 
+  onChange = (e) => {
+    const name = e.target.name;
+    this.setState({ ...this.state, name: name });
+  };
+
   onDeleteClick = (id) => {
     this.props.deleteProject(id);
     window.location.href = "/";
+  };
+
+  send = (e) => {
+    const data = new FormData();
+    data.append("name", this.state.name);
+    data.append("file", this.state.file);
+
+    Axios.post("/api/projects/upload", data)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   render() {
@@ -32,6 +53,32 @@ export class Project extends Component {
           Delete this project
         </Button>
         <ProjectEditModal></ProjectEditModal>
+        <form action="#">
+          <div>
+            <label htmlFor="name">Name</label>
+            <input
+              type="text"
+              id="name"
+              onChange={(e) => {
+                const name = e.target.value;
+                this.setState({ ...this.state, name: name });
+              }}
+            ></input>
+          </div>
+          <div>
+            <label htmlFor="file">Image</label>
+            <input
+              type="file"
+              id="file"
+              accept=".jpg"
+              onChange={(event) => {
+                const file = event.target.files[0];
+                this.setState({ ...this.state, file: file });
+              }}
+            ></input>
+          </div>
+          <button onClick={this.send}>Submit</button>
+        </form>
         <div class="row">
           <div class="col-sm-8">
             <img

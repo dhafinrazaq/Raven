@@ -3,17 +3,6 @@ const multer = require("multer");
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination: (req, file, callback) => {
-    callback(null, "./client/public/uploads/");
-  },
-  filename: (req, file, callback) => {
-    callback(null, file.filename);
-  },
-});
-
-const upload = multer({ storage: storage });
-
 // project model
 const Project = require("../../models/Project");
 
@@ -64,6 +53,29 @@ router.put("/:id", (req, res) => {
   })
     .then((project) => res.json(project))
     .catch((err) => res.status(404).json({ success: false }));
+});
+
+const fs = require("fs");
+const { promisify } = require("util");
+const pipeline = promisify(require("stream").pipeline);
+const upload = multer();
+router.post("/upload", upload.single("file"), async (req, res, next) => {
+  const {
+    file,
+    body: { name },
+  } = req;
+
+  if (file.detectedFileExtension != ".jpg")
+    next(new Error("invalid file type"));
+
+  const fileName = name + file.detectedFileExtension;
+
+  await pipeline(
+    file.stream,
+    fs.createWriteStream(`${__dirname}/../../public/images/${fileName}`)
+  );
+
+  res.json({ msg: "uploaded as " + fileName });
 });
 
 module.exports = router;

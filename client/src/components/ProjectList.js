@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
+import { Container } from "reactstrap";
 import { connect } from "react-redux";
-import { getProjects, deleteProject } from "../actions/projectActions";
+import { getProjects } from "../actions/projectActions";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
@@ -10,12 +10,8 @@ export class ProjectList extends Component {
     this.props.getProjects();
   }
 
-  onDeleteClick = (id) => {
-    this.props.deleteProject(id);
-  };
-
   render() {
-    const { projects } = this.props.project;
+    const { projects } = this.props;
 
     return (
       <Container>
@@ -53,9 +49,7 @@ ProjectList.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  project: state.project,
+  projects: state.project.projects,
 });
 
-export default connect(mapStateToProps, { getProjects, deleteProject })(
-  ProjectList
-);
+export default connect(mapStateToProps, { getProjects })(ProjectList);

@@ -13,7 +13,6 @@ import ProjectContributorSidebar from "./ProjectContributorSidebar";
 
 export class Project extends Component {
   state = {
-    name: "",
     file: null,
     img: null,
   };
@@ -37,28 +36,14 @@ export class Project extends Component {
     }
   }
 
-  onChange = (e) => {
-    const name = e.target.name;
-    this.setState({ ...this.state, name: name });
-  };
-
   onDeleteClick = (id) => {
     this.props.deleteProject(id);
     window.location.href = "/";
   };
 
-  // send = (e) => {
-  //   const data = new FormData();
-  //   data.append("name", this.state.name);
-  //   data.append("file", this.state.file);
-
-  //   Axios.post("/api/projects/upload", data)
-  //     .then((res) => console.log(res))
-  //     .catch((err) => console.log(err));
-  // };
   send = (e) => {
     const data = new FormData();
-    data.append("name", this.state.name);
+    data.append("id", this.props.project._id);
     data.append("file", this.state.file);
 
     this.props.editProjectImage(data);
@@ -72,9 +57,8 @@ export class Project extends Component {
   };
 
   render() {
-    const { name } = this.props.project.project;
+    const { name, _id } = this.props.project;
 
-    // console.log(img);
     return (
       <div>
         <h1 class="text-center">{name}</h1>
@@ -82,23 +66,12 @@ export class Project extends Component {
           className="remove-btn"
           color="danger"
           size="sm"
-          onClick={() => this.onDeleteClick(this.props.id)}
+          onClick={() => this.onDeleteClick(_id)}
         >
           Delete this project
         </Button>
         <ProjectEditModal></ProjectEditModal>
         <form action="#">
-          <div>
-            <label htmlFor="name">Name</label>
-            <input
-              type="text"
-              id="name"
-              onChange={(e) => {
-                const name = e.target.value;
-                this.setState({ ...this.state, name: name });
-              }}
-            ></input>
-          </div>
           <div>
             <label htmlFor="file">Image</label>
             <input
@@ -141,7 +114,7 @@ Project.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  project: state.project,
+  project: state.project.project,
 });
 
 export default connect(mapStateToProps, {

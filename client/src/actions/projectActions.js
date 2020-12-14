@@ -6,6 +6,7 @@ import {
   PROJECTS_LOADING,
   GET_PROJECT,
   EDIT_PROJECT,
+  SEARCH_PROJECTS,
 } from "./types";
 
 export const getProjects = () => (dispatch) => {
@@ -57,3 +58,13 @@ export const editProject = (id, project) => (dispatch) => {
     });
   });
 };
+
+// export const searchProjects = () => (dispatch) => {
+//   dispatch(setProjectsLoading());
+//   axios.get(`/api/projects/${query}`).then((res) =>
+//     dispatch({
+//       type: SEARCH_PROJECTS,
+//       payload: res.data,
+//     })
+//   );
+// };

@@ -36,7 +36,7 @@ export class ProjectList extends Component {
         <h1 class="text-center">Projects List</h1>
         <ul className="project-list">
           {projects.map(({ _id, name, img }) => (
-            <Link to={{ pathname: "/projects/" + _id }} key={_id}>
+            <Link to={{ pathname: "/projects/" + _id + "?#" }} key={_id}>
               <li className="project-list-item">
                 <figure class="figure">
                   <div class="row">

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Button, FormGroup } from "reactstrap";
 import PropTypes from "prop-types";
 import {
   getProject,
@@ -77,9 +77,10 @@ export class Project extends Component {
         </Button>
         <ProjectEditModal></ProjectEditModal>
         <form action="#">
-          <div>
+          <FormGroup>
             <label htmlFor="file">Image</label>
             <input
+              className="form-control-file"
               type="file"
               id="file"
               accept=".jpg"
@@ -88,8 +89,10 @@ export class Project extends Component {
                 this.setState({ ...this.state, file: file });
               }}
             ></input>
-          </div>
-          <button onClick={this.send}>Submit</button>
+          </FormGroup>
+          <button className="btn btn-primary" onClick={this.send}>
+            Submit
+          </button>
         </form>
         <div class="row">
           <div class="col-sm-8">

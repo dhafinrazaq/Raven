@@ -16,6 +16,12 @@ export class ProjectChangeImageModal extends Component {
     img: "",
   };
 
+  componentDidMount() {
+    this.props.getProject(this.props.id).then(() => {
+      this.props.updateProjectImageSrc(this.props.project._id);
+    });
+  }
+
   send = (e) => {
     const data = new FormData();
     data.append("id", this.props.project._id);
@@ -38,20 +44,20 @@ export class ProjectChangeImageModal extends Component {
   render() {
     return (
       <div>
-        <Button
-          color="dark"
-          style={{ marginBottom: "2rem" }}
-          onClick={this.toggle}
-        >
-          Change Project Poster
-        </Button>
+        <div style={{ marginBottom: "2rem" }} onClick={this.toggle}>
+          <img
+            src={this.props.imageSrc}
+            class="figure-img img-fluid mx-auto project-detail-image"
+            alt="Click here to change image"
+            style={{ maxHeight: "200px", maxWidth: "200px" }}
+          ></img>
+        </div>
 
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Change Project Poster</ModalHeader>
           <ModalBody>
             <form action="#">
               <FormGroup>
-                <label htmlFor="file">Image</label>
                 <input
                   className="form-control-file"
                   type="file"
@@ -76,6 +82,7 @@ export class ProjectChangeImageModal extends Component {
 
 const mapsStateToProps = (state) => ({
   project: state.project.project,
+  imageSrc: state.project.imageSrc,
 });
 
 export default connect(mapsStateToProps, {

@@ -34,21 +34,16 @@ export class Project extends Component {
         <Button
           className="remove-btn"
           color="danger"
-          size="sm"
           onClick={() => this.onDeleteClick(_id)}
         >
-          Delete this project
+          Delete
         </Button>
         <ProjectEditModal></ProjectEditModal>
-        <ProjectChangeImageModal></ProjectChangeImageModal>
         <div class="row">
           <div class="col-sm-8">
-            <img
-              src={this.props.imageSrc}
-              class="figure-img img-fluid mx-auto"
-              alt="No image"
-              style={{ maxHeight: "200px", maxWidth: "200px" }}
-            ></img>
+            <ProjectChangeImageModal
+              id={this.props.id}
+            ></ProjectChangeImageModal>
           </div>
           <div class="col-sm-4">
             <ProjectContributorSidebar></ProjectContributorSidebar>

@@ -1,14 +1,5 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-} from "reactstrap";
+import { Button, Modal, ModalHeader, ModalBody, FormGroup } from "reactstrap";
 
 import { connect } from "react-redux";
 import {
@@ -25,37 +16,17 @@ export class ProjectChangeImageModal extends Component {
     img: "",
   };
 
-  getImgSource = () => {
-    const { img } = this.props.project;
-
-    if (!img) {
-      return "";
-    }
-
-    var base64Flag = "data:image/jpeg;base64,";
-
-    var imageStr = this.arrayBufferToBase64(img.data.data);
-    return base64Flag + imageStr;
-  };
-
   send = (e) => {
     const data = new FormData();
     data.append("id", this.props.project._id);
     data.append("file", this.state.file);
 
     this.props.editProjectImage(data).then(() => {
-      this.props.updateProjectImageSrc(this.getImgSource());
+      this.props.updateProjectImageSrc(this.props.project._id);
     });
 
     // close modal
     this.toggle();
-  };
-
-  arrayBufferToBase64 = (buffer) => {
-    var binary = "";
-    var bytes = [].slice.call(new Uint8Array(buffer));
-    bytes.forEach((b) => (binary += String.fromCharCode(b)));
-    return window.btoa(binary);
   };
 
   toggle = () => {
@@ -72,11 +43,11 @@ export class ProjectChangeImageModal extends Component {
           style={{ marginBottom: "2rem" }}
           onClick={this.toggle}
         >
-          Edit this project
+          Change Project Poster
         </Button>
 
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
-          <ModalHeader toggle={this.toggle}>Edit Project</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Change Project Poster</ModalHeader>
           <ModalBody>
             <form action="#">
               <FormGroup>

@@ -9,6 +9,7 @@ import {
   EDIT_PROJECT_IMAGE,
   UPDATE_PROJECT_IMAGE_SRC,
 } from "./types";
+import { getImgSource } from "../helpers/imageProcessing";
 
 export const getProjects = () => (dispatch) => {
   dispatch(setProjectsLoading());
@@ -69,9 +70,11 @@ export const editProjectImage = (project) => async (dispatch) => {
   });
 };
 
-export const updateProjectImageSrc = (imageSrc) => async (dispatch) => {
-  await dispatch({
-    type: UPDATE_PROJECT_IMAGE_SRC,
-    imageSrc: imageSrc,
+export const updateProjectImageSrc = (id) => async (dispatch) => {
+  await axios.get(`/api/projects/${id}`).then((res) => {
+    dispatch({
+      type: UPDATE_PROJECT_IMAGE_SRC,
+      imageSrc: getImgSource(res.data),
+    });
   });
 };

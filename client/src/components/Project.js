@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, FormGroup } from "reactstrap";
+import { Button } from "reactstrap";
 import PropTypes from "prop-types";
 import {
   getProject,
@@ -16,29 +16,9 @@ import ProjectChangeImageModal from "./ProjectChangeImageModal";
 export class Project extends Component {
   componentDidMount() {
     this.props.getProject(this.props.id).then(() => {
-      this.props.updateProjectImageSrc(this.getImgSource());
+      this.props.updateProjectImageSrc(this.props.id);
     });
   }
-
-  getImgSource = () => {
-    const { img } = this.props.project;
-
-    if (!img) {
-      return "";
-    }
-
-    var base64Flag = "data:image/jpeg;base64,";
-
-    var imageStr = this.arrayBufferToBase64(img.data.data);
-    return base64Flag + imageStr;
-  };
-
-  arrayBufferToBase64 = (buffer) => {
-    var binary = "";
-    var bytes = [].slice.call(new Uint8Array(buffer));
-    bytes.forEach((b) => (binary += String.fromCharCode(b)));
-    return window.btoa(binary);
-  };
 
   onDeleteClick = (id) => {
     this.props.deleteProject(id);

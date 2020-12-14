@@ -50,7 +50,6 @@ const reducer = function (state = initialState, action) {
       return {
         ...state,
         project: action.payload,
-        img: action.payload.img,
         loading: false,
       };
     case EDIT_PROJECT_IMAGE:

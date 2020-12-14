@@ -14,26 +14,13 @@ import ProjectContributorSidebar from "./ProjectContributorSidebar";
 export class Project extends Component {
   state = {
     file: null,
-    img: null,
+    img: "",
   };
 
-  async componentDidMount() {
-    await this.props.getProject(this.props.id);
-
-    const { img } = this.props.project;
-
-    var base64Flag = "data:image/jpeg;base64,";
-    if ("data" in img) {
-      if ("data" in img.data) {
-        console.log("img data");
-        console.log(img.data);
-        var imageStr = this.arrayBufferToBase64(img.data.data);
-        this.setState({
-          ...this.state,
-          img: base64Flag + imageStr,
-        });
-      }
-    }
+  componentDidMount() {
+    this.props.getProject(this.props.id).then(() => {
+      this.setImgSource();
+    });
   }
 
   onDeleteClick = (id) => {
@@ -41,12 +28,30 @@ export class Project extends Component {
     window.location.href = "/";
   };
 
+  setImgSource = () => {
+    const { img } = this.props.project;
+
+    if (!img) {
+      return;
+    }
+
+    var base64Flag = "data:image/jpeg;base64,";
+
+    var imageStr = this.arrayBufferToBase64(img.data.data);
+    this.setState({
+      ...this.state,
+      img: base64Flag + imageStr,
+    });
+  };
+
   send = (e) => {
     const data = new FormData();
     data.append("id", this.props.project._id);
     data.append("file", this.state.file);
 
-    this.props.editProjectImage(data);
+    this.props.editProjectImage(data).then(() => {
+      this.setImgSource();
+    });
   };
 
   arrayBufferToBase64 = (buffer) => {
@@ -91,8 +96,8 @@ export class Project extends Component {
             <img
               src={this.state.img}
               class="figure-img img-fluid mx-auto"
-              alt="A generic square placeholder image with rounded corners in a figure."
-              style={{ maxHeight: "100%", maxWidth: "100%" }}
+              alt="No image"
+              style={{ maxHeight: "200px", maxWidth: "200px" }}
             ></img>
           </div>
           <div class="col-sm-4">

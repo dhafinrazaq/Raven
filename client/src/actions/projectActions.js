@@ -59,8 +59,8 @@ export const editProject = (id, project) => (dispatch) => {
   });
 };
 
-export const editProjectImage = (project) => (dispatch) => {
-  axios.post(`/api/projects/upload`, project).then((res) => {
+export const editProjectImage = (project) => async (dispatch) => {
+  await axios.post(`/api/projects/upload`, project).then((res) => {
     dispatch({
       type: EDIT_PROJECT_IMAGE,
       payload: res.data,

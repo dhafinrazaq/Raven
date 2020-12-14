@@ -7,6 +7,7 @@ import {
   GET_PROJECT,
   EDIT_PROJECT,
   EDIT_PROJECT_IMAGE,
+  UPDATE_PROJECT_IMAGE_SRC,
 } from "./types";
 
 export const getProjects = () => (dispatch) => {
@@ -65,5 +66,12 @@ export const editProjectImage = (project) => async (dispatch) => {
       type: EDIT_PROJECT_IMAGE,
       payload: res.data,
     });
+  });
+};
+
+export const updateProjectImageSrc = (imageSrc) => async (dispatch) => {
+  await dispatch({
+    type: UPDATE_PROJECT_IMAGE_SRC,
+    imageSrc: imageSrc,
   });
 };

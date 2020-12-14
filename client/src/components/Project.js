@@ -5,53 +5,32 @@ import {
   getProject,
   deleteProject,
   editProjectImage,
+  updateProjectImageSrc,
 } from "../actions/projectActions";
 import { connect } from "react-redux";
 import ProjectNavbar from "./ProjectNavbar";
 import ProjectEditModal from "./ProjectEditModal";
 import ProjectContributorSidebar from "./ProjectContributorSidebar";
+import ProjectChangeImageModal from "./ProjectChangeImageModal";
 
 export class Project extends Component {
-  state = {
-    file: null,
-    img: "",
-  };
-
   componentDidMount() {
     this.props.getProject(this.props.id).then(() => {
-      this.setImgSource();
+      this.props.updateProjectImageSrc(this.getImgSource());
     });
   }
 
-  onDeleteClick = (id) => {
-    this.props.deleteProject(id);
-    window.location.href = "/";
-  };
-
-  setImgSource = () => {
+  getImgSource = () => {
     const { img } = this.props.project;
 
     if (!img) {
-      return;
+      return "";
     }
 
     var base64Flag = "data:image/jpeg;base64,";
 
     var imageStr = this.arrayBufferToBase64(img.data.data);
-    this.setState({
-      ...this.state,
-      img: base64Flag + imageStr,
-    });
-  };
-
-  send = (e) => {
-    const data = new FormData();
-    data.append("id", this.props.project._id);
-    data.append("file", this.state.file);
-
-    this.props.editProjectImage(data).then(() => {
-      this.setImgSource();
-    });
+    return base64Flag + imageStr;
   };
 
   arrayBufferToBase64 = (buffer) => {
@@ -59,6 +38,11 @@ export class Project extends Component {
     var bytes = [].slice.call(new Uint8Array(buffer));
     bytes.forEach((b) => (binary += String.fromCharCode(b)));
     return window.btoa(binary);
+  };
+
+  onDeleteClick = (id) => {
+    this.props.deleteProject(id);
+    window.location.href = "/";
   };
 
   render() {
@@ -76,28 +60,11 @@ export class Project extends Component {
           Delete this project
         </Button>
         <ProjectEditModal></ProjectEditModal>
-        <form action="#">
-          <FormGroup>
-            <label htmlFor="file">Image</label>
-            <input
-              className="form-control-file"
-              type="file"
-              id="file"
-              accept=".jpg"
-              onChange={(event) => {
-                const file = event.target.files[0];
-                this.setState({ ...this.state, file: file });
-              }}
-            ></input>
-          </FormGroup>
-          <button className="btn btn-primary" onClick={this.send}>
-            Submit
-          </button>
-        </form>
+        <ProjectChangeImageModal></ProjectChangeImageModal>
         <div class="row">
           <div class="col-sm-8">
             <img
-              src={this.state.img}
+              src={this.props.imageSrc}
               class="figure-img img-fluid mx-auto"
               alt="No image"
               style={{ maxHeight: "200px", maxWidth: "200px" }}
@@ -123,10 +90,12 @@ Project.propTypes = {
 
 const mapStateToProps = (state) => ({
   project: state.project.project,
+  imageSrc: state.project.imageSrc,
 });
 
 export default connect(mapStateToProps, {
   getProject,
   deleteProject,
   editProjectImage,
+  updateProjectImageSrc,
 })(Project);

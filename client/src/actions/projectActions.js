@@ -6,6 +6,7 @@ import {
   PROJECTS_LOADING,
   GET_PROJECT,
   EDIT_PROJECT,
+  EDIT_PROJECT_IMAGE,
 } from "./types";
 
 export const getProjects = () => (dispatch) => {
@@ -39,9 +40,9 @@ export const setProjectsLoading = () => {
   };
 };
 
-export const getProject = (id) => (dispatch) => {
+export const getProject = (id) => async (dispatch) => {
   dispatch(setProjectsLoading());
-  axios.get(`/api/projects/${id}`).then((res) => {
+  await axios.get(`/api/projects/${id}`).then((res) => {
     dispatch({
       type: GET_PROJECT,
       payload: res.data,
@@ -53,6 +54,15 @@ export const editProject = (id, project) => (dispatch) => {
   axios.put(`/api/projects/${id}`, project).then((res) => {
     dispatch({
       type: EDIT_PROJECT,
+      payload: res.data,
+    });
+  });
+};
+
+export const editProjectImage = (project) => (dispatch) => {
+  axios.post(`/api/projects/upload`, project).then((res) => {
+    dispatch({
+      type: EDIT_PROJECT_IMAGE,
       payload: res.data,
     });
   });

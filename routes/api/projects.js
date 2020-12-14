@@ -1,5 +1,6 @@
 const express = require("express");
 const multer = require("multer");
+const path = require("path");
 
 const router = express.Router();
 
@@ -59,6 +60,41 @@ const fs = require("fs");
 const { promisify } = require("util");
 const pipeline = promisify(require("stream").pipeline);
 const upload = multer();
+
+// router.post("/upload", upload.single("file"), async (req, res, next) => {
+//   const {
+//     file,
+//     body: { name },
+//   } = req;
+
+//   if (file.detectedFileExtension != ".jpg")
+//     next(new Error("invalid file type"));
+
+//   const fileName = name + file.detectedFileExtension;
+
+//   await pipeline(
+//     file.stream,
+//     fs.createWriteStream(`${__dirname}/../../public/images/${fileName}`)
+//   );
+
+//   const obj = new Project({
+//     name: name,
+//     description: "not empty",
+//     img: {
+//       data: fs.readFileSync(
+//         path.join(`${__dirname}/../../public/images/${fileName}`)
+//       ),
+//       contentType: "image/jpg",
+//     },
+//   });
+
+//   obj
+//     .save()
+//     .then((project) => res.json(project))
+//     .catch((err) => res.json({ msg: "failed" }));
+//   // res.redirect("/");
+// });
+
 router.post("/upload", upload.single("file"), async (req, res, next) => {
   const {
     file,
@@ -75,7 +111,22 @@ router.post("/upload", upload.single("file"), async (req, res, next) => {
     fs.createWriteStream(`${__dirname}/../../public/images/${fileName}`)
   );
 
-  res.json({ msg: "uploaded as " + fileName });
+  const obj = await new Project({
+    name: name,
+    description: "not empty",
+    img: {
+      data: fs.readFileSync(
+        path.join(`${__dirname}/../../public/images/${fileName}`)
+      ),
+      contentType: "image/jpg",
+    },
+  });
+
+  await obj
+    .save()
+    .then((project) => res.json(project))
+    .catch((err) => res.json({ msg: "failed" }));
+  // res.redirect("/");
 });
 
 module.exports = router;

@@ -73,7 +73,6 @@ const signInController = (req, res) => {
 
   // Check input validation
   if (!isValid) {
-    console.log(inputErrors);
     return res.status(400).json(inputErrors);
   }
 

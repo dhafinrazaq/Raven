@@ -5,7 +5,6 @@ import {
   DELETE_PROJECT,
   PROJECTS_LOADING,
   GET_PROJECT,
-  SEARCH_PROJECTS,
 } from "../actions/types";
 
 const initialState = {
@@ -49,12 +48,6 @@ const reducer = function (state = initialState, action) {
       return {
         ...state,
         project: action.payload,
-        loading: false,
-      };
-    case SEARCH_PROJECTS:
-      return {
-        ...state,
-        projects: action.payload,
         loading: false,
       };
     default:

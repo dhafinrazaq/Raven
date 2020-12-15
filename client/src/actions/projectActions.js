@@ -59,12 +59,11 @@ export const editProject = (id, project) => (dispatch) => {
   });
 };
 
-// export const searchProjects = () => (dispatch) => {
-//   dispatch(setProjectsLoading());
-//   axios.get(`/api/projects/${query}`).then((res) =>
-//     dispatch({
-//       type: SEARCH_PROJECTS,
-//       payload: res.data,
-//     })
-//   );
-// };
+export const getSearchProjects = (query) => (dispatch) => {
+  axios.get(`/search/${query}`).then((res) =>
+    dispatch({
+      type: GET_PROJECTS,
+      payload: res.data,
+    })
+  );
+};

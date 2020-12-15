@@ -2,6 +2,7 @@ import logo from "./RavenLogo.svg";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AppNavbar from "./components/AppNavbar";
+import SearchProjectList from "./components/SearchProjectList";
 import ProjectList from "./components/ProjectList";
 import Project from "./components/Project";
 import ProjectModal from "./components/ProjectModal";
@@ -35,6 +36,16 @@ function App() {
               render={(props) => (
                 <React.Fragment>
                   <Project id={props.match.params.id}></Project>
+                </React.Fragment>
+              )}
+            />
+            <Route
+              exact
+              path="/search/:query"
+              render={(props) => (
+                <React.Fragment>
+                  <ProjectModal></ProjectModal>
+                  <SearchProjectList query={props.match.params.query} />
                 </React.Fragment>
               )}
             />

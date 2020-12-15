@@ -5,7 +5,7 @@ node_modules
 .vscode
 .env
 /public/images
-.eslintcache
+/client/.eslintcache
 
 # dependencies
 /client/node_modules

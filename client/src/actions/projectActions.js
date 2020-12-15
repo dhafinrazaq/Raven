@@ -6,6 +6,7 @@ import {
   PROJECTS_LOADING,
   GET_PROJECT,
   EDIT_PROJECT,
+  SEARCH_PROJECTS,
   EDIT_PROJECT_IMAGE,
   UPDATE_PROJECT_IMAGE_SRC,
 } from "./types";
@@ -61,7 +62,16 @@ export const editProject = (id, project) => (dispatch) => {
   });
 };
 
+export const getSearchProjects = (query) => (dispatch) => {
+  axios.get(`/search/${query}`).then((res) =>
+    dispatch({
+      type: GET_PROJECTS,
+      payload: res.data,
+    })
+  );
+};
 export const editProjectImage = (project) => async (dispatch) => {
+  await console.log(project.file);
   await axios.post(`/api/projects/upload`, project).then((res) => {
     dispatch({
       type: EDIT_PROJECT_IMAGE,

@@ -1,4 +1,3 @@
-const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 
 // Get utility functions
@@ -22,12 +21,31 @@ const signUpController = (req, res) => {
     $or: [{ username: userData.username }, { email: userData.email }],
   };
 
-  const sendResponse = (newUser) => {
+  const setCookieAndSendResponse = (newUser) => (err, token) => {
+    if (err) {
+      throw err;
+    }
+
+    res.cookie("authentication", token, {
+      maxAge: keys.authTTL,
+      secure: false, // set to true if your using https
+      httpOnly: true, // prevents XSS attacks
+    });
+
+    newUser.password = undefined;
     return res.json(newUser);
   };
 
-  const saveAndSendResponse = (passwordHash) => {
-    userUtils.saveUser(userData, passwordHash, sendResponse);
+  const getJWT = (newUser) => {
+    userUtils.generateJWT(
+      newUser,
+      keys.authTTL,
+      setCookieAndSendResponse(newUser)
+    );
+  };
+
+  const saveUser = (passwordHash) => {
+    userUtils.saveUser(userData, passwordHash, getJWT);
   };
 
   const checkIfUserExists = (passwordHash) => (user) => {
@@ -35,11 +53,15 @@ const signUpController = (req, res) => {
       return res.json({ uid: "That username or email already exists" });
     }
 
-    saveAndSendResponse(passwordHash);
+    saveUser(passwordHash);
   };
 
   const getUser = (passwordHash) => {
-    userUtils.findUser(filterForExistingUser, false, checkIfUserExists(passwordHash));
+    userUtils.findUser(
+      filterForExistingUser,
+      false,
+      checkIfUserExists(passwordHash)
+    );
   };
 
   userUtils.getBcryptHash(userData.password, getUser);
@@ -60,7 +82,17 @@ const signInController = (req, res) => {
     $or: [{ username: userData.uid }, { email: userData.uid }],
   };
 
-  const sendResponse = (user) => {
+  const setCookieAndSendResponse = (user) => (err, token) => {
+    if (err) {
+      throw err;
+    }
+
+    res.cookie("authentication", token, {
+      maxAge: keys.authTTL,
+      secure: false, // set to true if your using https
+      httpOnly: true, // prevents XSS attacks
+    });
+
     user.password = undefined;
     return res.json(user);
   };
@@ -70,7 +102,7 @@ const signInController = (req, res) => {
       return res.status(403).json({ password: "Incorrect password entered" });
     }
 
-    sendResponse(user);
+    userUtils.generateJWT(user, keys.authTTL, setCookieAndSendResponse(user));
   };
 
   const checkIfUserIsValid = (user) => {
@@ -90,7 +122,26 @@ const signInController = (req, res) => {
   userUtils.findUser(filterForExistingUser, true, checkIfUserIsValid);
 };
 
+const getUserDataController = (req, res) => {
+  const sendResponse = (user) => {
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "User no longer exists in the database" });
+    }
+
+    return res.json(user);
+  };
+
+  const getUserData = (filterForUserID) => {
+    userUtils.findUser(filterForUserID, false, sendResponse);
+  };
+
+  userUtils.verifyJWT(req.cookies.authentication, getUserData);
+};
+
 module.exports = {
   signUpController,
   signInController,
+  getUserDataController,
 };

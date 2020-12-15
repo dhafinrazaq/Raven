@@ -71,6 +71,7 @@ export const getSearchProjects = (query) => (dispatch) => {
   );
 };
 export const editProjectImage = (project) => async (dispatch) => {
+  await console.log(project.file);
   await axios.post(`/api/projects/upload`, project).then((res) => {
     dispatch({
       type: EDIT_PROJECT_IMAGE,

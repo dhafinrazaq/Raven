@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
+import { Container } from "reactstrap";
 import { connect } from "react-redux";
-import { getProjects, deleteProject } from "../actions/projectActions";
+import { getProjects } from "../actions/projectActions";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
@@ -10,27 +10,41 @@ export class ProjectList extends Component {
     this.props.getProjects();
   }
 
-  onDeleteClick = (id) => {
-    this.props.deleteProject(id);
+  setImgSource = (imgBlob) => {
+    if (!imgBlob) {
+      return "";
+    }
+
+    var base64Flag = "data:image/jpeg;base64,";
+
+    var imageStr = this.arrayBufferToBase64(imgBlob.data.data);
+    return base64Flag + imageStr;
+  };
+
+  arrayBufferToBase64 = (buffer) => {
+    var binary = "";
+    var bytes = [].slice.call(new Uint8Array(buffer));
+    bytes.forEach((b) => (binary += String.fromCharCode(b)));
+    return window.btoa(binary);
   };
 
   render() {
-    const { projects } = this.props.project;
+    const { projects } = this.props;
 
     return (
       <Container>
         <h1 class="text-center">Projects List</h1>
         <ul className="project-list">
-          {projects.map(({ _id, name }) => (
-            <Link to={{ pathname: "/projects/" + _id }} key={_id}>
+          {projects.map(({ _id, name, img }) => (
+            <Link to={{ pathname: "/projects/" + _id + "?#" }} key={_id}>
               <li className="project-list-item">
                 <figure class="figure">
                   <div class="row">
                     <div class="col-md-8 offset-md-2">
                       <img
-                        src="https://via.placeholder.com/300.png/09f/fff"
+                        src={this.setImgSource(img)}
                         class="figure-img img-fluid mx-auto"
-                        alt="A generic square placeholder image with rounded corners in a figure."
+                        alt="No image"
                         style={{ maxHeight: "100%", maxWidth: "100%" }}
                       ></img>
                     </div>
@@ -53,9 +67,7 @@ ProjectList.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  project: state.project,
+  projects: state.project.projects,
 });
 
-export default connect(mapStateToProps, { getProjects, deleteProject })(
-  ProjectList
-);
+export default connect(mapStateToProps, { getProjects })(ProjectList);

@@ -66,14 +66,6 @@ const options = {
   useUnifiedTopology: true,
 };
 
-// Image storage
-// const fileUpload = require('express-fileupload')
-
-// app.use(fileUpload())
-// app.post
-// const ejs = require("ejs");
-// const path = require("path");
-
 // Connect to the specified MongoDB database
 mongoose
   .connect(db, options)

@@ -7,7 +7,10 @@ import {
   GET_PROJECT,
   EDIT_PROJECT,
   SEARCH_PROJECTS,
+  EDIT_PROJECT_IMAGE,
+  UPDATE_PROJECT_IMAGE_SRC,
 } from "./types";
+import { getImgSource } from "../helpers/imageProcessing";
 
 export const getProjects = () => (dispatch) => {
   dispatch(setProjectsLoading());
@@ -40,9 +43,9 @@ export const setProjectsLoading = () => {
   };
 };
 
-export const getProject = (id) => (dispatch) => {
+export const getProject = (id) => async (dispatch) => {
   dispatch(setProjectsLoading());
-  axios.get(`/api/projects/${id}`).then((res) => {
+  await axios.get(`/api/projects/${id}`).then((res) => {
     dispatch({
       type: GET_PROJECT,
       payload: res.data,
@@ -66,4 +69,21 @@ export const getSearchProjects = (query) => (dispatch) => {
       payload: res.data,
     })
   );
+};
+export const editProjectImage = (project) => async (dispatch) => {
+  await axios.post(`/api/projects/upload`, project).then((res) => {
+    dispatch({
+      type: EDIT_PROJECT_IMAGE,
+      payload: res.data,
+    });
+  });
+};
+
+export const updateProjectImageSrc = (id) => async (dispatch) => {
+  await axios.get(`/api/projects/${id}`).then((res) => {
+    dispatch({
+      type: UPDATE_PROJECT_IMAGE_SRC,
+      imageSrc: getImgSource(res.data),
+    });
+  });
 };

@@ -12,6 +12,7 @@ const { queryParser } = require("express-query-parser");
 const cookieParser = require("cookie-parser");
 const usersRouter = require("./routes/api/users");
 const projectsRouter = require("./routes/api/projects");
+const searchRouter = require("./routes/api/search");
 const helmet = require("helmet");
 const compression = require("compression");
 
@@ -70,14 +71,6 @@ const options = {
   useUnifiedTopology: true,
 };
 
-// Image storage
-// const fileUpload = require('express-fileupload')
-
-// app.use(fileUpload())
-// app.post
-// const ejs = require("ejs");
-// const path = require("path");
-
 // Connect to the specified MongoDB database
 mongoose
   .connect(db, options)
@@ -87,6 +80,7 @@ mongoose
 // Routes
 app.use("/api/users", usersRouter);
 app.use("/api/projects", projectsRouter);
+app.use("/search", searchRouter);
 
 // Uses process.env.PORT if available otherwise 5000
 const port = process.env.PORT || 5000;

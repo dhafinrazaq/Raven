@@ -8,17 +8,34 @@ import {
   NavItem,
   NavLink,
   Container,
+  Form,
+  Input,
 } from "reactstrap";
 
 export class AppNavbar extends Component {
   state = {
     isOpen: false,
+    search: "",
   };
 
   toggle = () => {
     this.setState({
       isOpen: !this.state.isOpen,
     });
+  };
+
+  onChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    console.log("SUbmit pressed");
+
+    //Search Item using searchItem
+    window.location.href = `/search/${this.state.search}`;
   };
 
   render() {
@@ -29,7 +46,19 @@ export class AppNavbar extends Component {
             <NavbarBrand href="/">Raven</NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
-              <Nav className="ml-auto" navbar></Nav>
+              <Nav className="ml-auto" navbar>
+                <NavItem>
+                  <Form onSubmit={this.onSubmit}>
+                    <Input
+                      type="text"
+                      name="search"
+                      id="project"
+                      placeholder="Search project"
+                      onChange={this.onChange}
+                    />
+                  </Form>
+                </NavItem>
+              </Nav>
             </Collapse>
           </Container>
         </Navbar>

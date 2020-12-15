@@ -1,18 +1,8 @@
 const express = require("express");
 const multer = require("multer");
+const path = require("path");
 
 const router = express.Router();
-
-const storage = multer.diskStorage({
-  destination: (req, file, callback) => {
-    callback(null, "./client/public/uploads/");
-  },
-  filename: (req, file, callback) => {
-    callback(null, file.filename);
-  },
-});
-
-const upload = multer({ storage: storage });
 
 // project model
 const Project = require("../../models/Project");
@@ -64,6 +54,48 @@ router.put("/:id", (req, res) => {
   })
     .then((project) => res.json(project))
     .catch((err) => res.status(404).json({ success: false }));
+});
+
+const fs = require("fs");
+const { promisify } = require("util");
+const pipeline = promisify(require("stream").pipeline);
+const upload = multer();
+
+router.post("/upload", upload.single("file"), async (req, res, next) => {
+  const {
+    file,
+    body: { id },
+  } = req;
+
+  console.log(file);
+  if (file.detectedFileExtension != ".jpg")
+    next(new Error("invalid file type"));
+
+  const fileName = id + file.detectedFileExtension;
+
+  await pipeline(
+    file.stream,
+    fs.createWriteStream(`${__dirname}/../../public/images/${fileName}`)
+  );
+
+  Project.findByIdAndUpdate(
+    id,
+    {
+      img: {
+        data: fs.readFileSync(
+          path.join(`${__dirname}/../../public/images/${fileName}`)
+        ),
+        contentType: "image/jpg",
+      },
+    },
+    {
+      returnOriginal: false,
+      new: true,
+    }
+  )
+    .then((project) => res.json(project))
+    .catch((err) => res.status(404).json({ success: false }));
+  // res.redirect("/");
 });
 
 module.exports = router;

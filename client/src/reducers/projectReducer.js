@@ -5,12 +5,15 @@ import {
   DELETE_PROJECT,
   PROJECTS_LOADING,
   GET_PROJECT,
+  EDIT_PROJECT_IMAGE,
+  UPDATE_PROJECT_IMAGE_SRC,
 } from "../actions/types";
 
 const initialState = {
   projects: [],
   loading: false,
   project: {},
+  img: {},
 };
 
 const reducer = function (state = initialState, action) {
@@ -49,6 +52,17 @@ const reducer = function (state = initialState, action) {
         ...state,
         project: action.payload,
         loading: false,
+      };
+    case EDIT_PROJECT_IMAGE:
+      return {
+        ...state,
+        project: action.payload,
+        loading: false,
+      };
+    case UPDATE_PROJECT_IMAGE_SRC:
+      return {
+        ...state,
+        imageSrc: action.imageSrc,
       };
     default:
       return state;

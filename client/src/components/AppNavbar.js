@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {
   Collapse,
+  Button,
   Navbar,
   NavbarToggler,
   NavbarBrand,
@@ -32,7 +33,7 @@ export class AppNavbar extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    console.log("SUbmit pressed");
+    console.log("Submit pressed");
 
     //Search Item using searchItem
     window.location.href = `/search/${this.state.search}`;
@@ -43,6 +44,7 @@ export class AppNavbar extends Component {
       <div>
         <Navbar color="dark" dark expand="sm" className="mb-5">
           <Container>
+            <img src="./RavenLogo.svg" className="mr-3" />
             <NavbarBrand href="/">Raven</NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
@@ -57,6 +59,15 @@ export class AppNavbar extends Component {
                       onChange={this.onChange}
                     />
                   </Form>
+                </NavItem>
+                <NavItem>
+                  <Button
+                    color="success"
+                    onClick={() => (window.location.href = "/account")}
+                    className="ml-4"
+                  >
+                    Login
+                  </Button>
                 </NavItem>
               </Nav>
             </Collapse>

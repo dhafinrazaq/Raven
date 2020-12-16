@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as types from "./types";
 
-export const signUp = (userFormData, displayError) => (dispatch) => {
+export const signUp = (userFormData, resetState, setError) => (dispatch) => {
   axios
     .post("/api/users/signup", userFormData)
     .then((res) => {
@@ -9,13 +9,15 @@ export const signUp = (userFormData, displayError) => (dispatch) => {
         type: types.SET_USER,
         payload: res.data,
       });
+      resetState();
+      window.location.href = "/";
     })
     .catch((err) => {
-      displayError(err.response.data);
+      setError(err.response.data);
     });
 };
 
-export const signIn = (userFormData, displayError) => (dispatch) => {
+export const signIn = (userFormData, resetState, setError) => (dispatch) => {
   axios
     .post("/api/users/signin", userFormData)
     .then((res) => {
@@ -23,8 +25,10 @@ export const signIn = (userFormData, displayError) => (dispatch) => {
         type: types.SET_USER,
         payload: res.data,
       });
+      resetState();
+      window.location.href = "/";
     })
     .catch((err) => {
-      displayError(err.response.data);
+      setError(err.response.data);
     });
 };

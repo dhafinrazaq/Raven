@@ -9,6 +9,7 @@ if (result.error) {
 const express = require("express");
 const mongoose = require("mongoose");
 const { queryParser } = require("express-query-parser");
+const cookieParser = require("cookie-parser");
 const usersRouter = require("./routes/api/users");
 const projectsRouter = require("./routes/api/projects");
 const searchRouter = require("./routes/api/search");
@@ -22,6 +23,7 @@ const cors = require("cors");
 var corsOptions = {
   // Specifies the origin(s) from which a server request can occur aside from its own origin
   origin: "http://localhost:3000",
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
@@ -39,6 +41,9 @@ app.use(
     extended: false,
   })
 );
+
+// Allows parsing of cookies
+app.use(cookieParser());
 
 // Converts booleans in url parameter into actual booleans instead of treating them like string, similarly for null
 app.use(

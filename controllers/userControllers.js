@@ -49,7 +49,9 @@ const signUpController = (req, res) => {
 
   const checkIfEmailExists = (passwordHash) => (user) => {
     if (user) {
-      return res.status(400).json({ email: "That email already exists, please try another." });
+      return res
+        .status(400)
+        .json({ email: "That email already exists, please try another." });
     }
 
     saveUser(passwordHash);
@@ -65,7 +67,11 @@ const signUpController = (req, res) => {
 
   const checkIfUsernameExists = (passwordHash) => (user) => {
     if (user) {
-      return res.status(400).json({ username: "That username already exists, please try another." });
+      return res
+        .status(400)
+        .json({
+          username: "That username already exists, please try another.",
+        });
     }
     filterByEmail(passwordHash);
   };
@@ -112,7 +118,7 @@ const signInController = (req, res) => {
 
   const authenticateUser = (user) => (isMatch) => {
     if (!isMatch) {
-      return res.status(403).json({ password: "Password is incorrect" });
+      return res.status(403).json({ password: "The password that you've entered is incorrect." });
     }
 
     userUtils.generateJWT(user, keys.authTTL, setCookieAndSendResponse(user));
@@ -122,7 +128,10 @@ const signInController = (req, res) => {
     if (!user) {
       return res
         .status(400)
-        .json({ uid: "The specified username or email does not exist" });
+        .json({
+          uid:
+            "The email address or username that you've entered doesn't match any account. Sign up for an account.",
+        });
     }
 
     userUtils.comparePassword(

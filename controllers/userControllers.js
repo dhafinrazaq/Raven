@@ -49,7 +49,7 @@ const signUpController = (req, res) => {
 
   const checkIfEmailExists = (passwordHash) => (user) => {
     if (user) {
-      return res.json({ email: "That email already exists" });
+      return res.status(400).json({ email: "That email already exists, please try another." });
     }
 
     saveUser(passwordHash);
@@ -65,9 +65,8 @@ const signUpController = (req, res) => {
 
   const checkIfUsernameExists = (passwordHash) => (user) => {
     if (user) {
-      return res.json({ username: "That username already exists" });
+      return res.status(400).json({ username: "That username already exists, please try another." });
     }
-
     filterByEmail(passwordHash);
   };
 

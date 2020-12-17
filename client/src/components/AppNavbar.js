@@ -1,6 +1,9 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import {
   Collapse,
+  Label,
   Button,
   Navbar,
   NavbarToggler,
@@ -33,11 +36,28 @@ export class AppNavbar extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    console.log("Submit pressed");
 
     //Search Item using searchItem
     window.location.href = `/search/${this.state.search}`;
   };
+
+  displayUsername = () => {
+    const username = this.props.user.username
+    if (username) {
+      return `Hello, ${username}`;
+    }
+
+    return "";
+  }
+
+  displayLogin = () => {
+    const isLoggedIn = Object.entries(this.props.user).length > 0;
+    if (isLoggedIn) {
+      return "Logout";
+    }
+
+    return "Login";
+  }
 
   render() {
     return (
@@ -66,8 +86,11 @@ export class AppNavbar extends Component {
                     onClick={() => (window.location.href = "/account")}
                     className="ml-4"
                   >
-                    Login
+                    {this.displayLogin()}
                   </Button>
+                </NavItem>
+                <NavItem>
+                  <Label>{this.displayUsername()}</Label>
                 </NavItem>
               </Nav>
             </Collapse>
@@ -78,4 +101,12 @@ export class AppNavbar extends Component {
   }
 }
 
-export default AppNavbar;
+AppNavbar.propTypes = {
+  user: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  user: state.user.user,
+});
+
+export default connect(mapStateToProps)(AppNavbar);

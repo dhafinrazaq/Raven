@@ -12,7 +12,9 @@ class SignIn extends Component {
   }
   render() {
     return (
-      <div className="fixed-center bg-light rounded border w-50 text-center pl-3 pr-3 pt-4 pb-4">
+      <div
+        className="bg-light rounded w-50 m-auto border pt-4 pb-4 text-center"
+      >
         <img src="./Ravenlogo.svg" className="mb-3" />
         <div>
           <SigninForm></SigninForm>

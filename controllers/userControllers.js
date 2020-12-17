@@ -130,7 +130,7 @@ const signInController = (req, res) => {
         .status(400)
         .json({
           uid:
-            "The email address or username that you've entered doesn't match any account. Sign up for an account.",
+            "The email address or username that you've entered doesn't match any account.",
         });
     }
 

@@ -53,10 +53,11 @@ function App() {
             <Route
               exact
               path="/account"
-              render={(props) => 
-              <React.Fragment>
-                <SignIn></SignIn>
-              </React.Fragment>}
+              render={(props) => (
+                <React.Fragment>
+                  <SignIn></SignIn>
+                </React.Fragment>
+              )}
             />
           </Container>
         </div>

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { signOut } from "../actions/userActions";
 import {
   Collapse,
   Label,
@@ -42,29 +43,48 @@ export class AppNavbar extends Component {
   };
 
   displayUsername = () => {
-    const username = this.props.user.username
+    const username = this.props.user.username;
     if (username) {
-      return `Hello, ${username}`;
+      return username;
     }
 
     return "";
-  }
+  };
 
   displayLogin = () => {
     const isLoggedIn = Object.entries(this.props.user).length > 0;
     if (isLoggedIn) {
-      return "Logout";
+      return (
+        <Button
+          color="danger"
+          onClick={() => {
+            this.props.signOut();
+            window.location.href = "/";
+          }}
+          className="ml-4"
+        >
+          Logout
+        </Button>
+      );
+    } else {
+      return (
+        <Button
+          color="success"
+          onClick={() => (window.location.href = "/account")}
+          className="ml-4"
+        >
+          Login
+        </Button>
+      );
     }
-
-    return "Login";
-  }
+  };
 
   render() {
     return (
       <div>
         <Navbar color="dark" dark expand="sm" className="mb-5">
           <Container>
-            <img src="./RavenLogo.svg" className="mr-3" />
+            <img src="/RavenLogo.svg" height="50" width="50" className="mr-3" />
             <NavbarBrand href="/">Raven</NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
@@ -80,17 +100,18 @@ export class AppNavbar extends Component {
                     />
                   </Form>
                 </NavItem>
+                <NavItem>{this.displayLogin()}</NavItem>
                 <NavItem>
-                  <Button
-                    color="success"
-                    onClick={() => (window.location.href = "/account")}
-                    className="ml-4"
+                  <Label
+                    style={{
+                      color: "white",
+                      wordWrap: "break-word",
+                      width: "120px",
+                    }}
+                    className="ml-3 mt-2"
                   >
-                    {this.displayLogin()}
-                  </Button>
-                </NavItem>
-                <NavItem>
-                  <Label>{this.displayUsername()}</Label>
+                    {this.displayUsername()}
+                  </Label>
                 </NavItem>
               </Nav>
             </Collapse>
@@ -109,4 +130,4 @@ const mapStateToProps = (state) => ({
   user: state.user.user,
 });
 
-export default connect(mapStateToProps)(AppNavbar);
+export default connect(mapStateToProps, { signOut })(AppNavbar);

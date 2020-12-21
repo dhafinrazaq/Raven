@@ -12,7 +12,7 @@ export class ProjectList extends Component {
 
   setImgSource = (imgBlob) => {
     if (!imgBlob) {
-      return "";
+      return "https://imgur.com/Zeuoreq.png";
     }
 
     var base64Flag = "data:image/jpeg;base64,";

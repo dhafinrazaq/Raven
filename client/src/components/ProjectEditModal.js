@@ -20,6 +20,16 @@ export class ProjectModal extends Component {
     description: this.props.project.project.description,
   };
 
+  componentDidMount() {
+    this.props.getProject(this.props.id).then(() => {
+      this.setState({
+        ...this.state,
+        name: this.props.project.project.name,
+        description: this.props.project.project.description,
+      });
+    });
+  }
+
   toggle = () => {
     this.setState({
       modal: !this.state.modal,
@@ -62,6 +72,7 @@ export class ProjectModal extends Component {
               <FormGroup>
                 <Label for="project">Project</Label>
                 <Input
+                  required
                   type="text"
                   name="name"
                   id="project"
@@ -71,6 +82,7 @@ export class ProjectModal extends Component {
                 ></Input>
                 <Label for="description">Description</Label>
                 <Input
+                  required
                   type="text"
                   name="description"
                   id="description"

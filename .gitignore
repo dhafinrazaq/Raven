@@ -4,6 +4,8 @@ node_modules
 .DS_Store
 .vscode
 .env
+/public/images
+/client/.eslintcache
 
 # dependencies
 /client/node_modules

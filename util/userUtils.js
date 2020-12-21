@@ -1,7 +1,9 @@
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 // Get User model (Using Schema made in another file)
 const User = require("../models/User");
+const keys = require("../config/keys");
 
 const getBcryptHash = (input, callback) => {
   bcrypt.genSalt(10, (err, salt) => {
@@ -46,7 +48,27 @@ const findUser = (conditions, includePassword, callback) => {
     toSelect = "+password";
   }
 
-  User.findOne(conditions).select(toSelect).then((user) => callback(user));
+  User.findOne(conditions)
+    .select(toSelect)
+    .then((user) => callback(user));
+};
+
+const generateJWT = (userData, ttl, callback) => {
+  const payload = {
+    id: userData.id,
+  };
+
+  jwt.sign(payload, keys.authSecret, { expiresIn: ttl }, callback);
+};
+
+const verifyJWT = (token, callback) => {
+  jwt.verify(token, keys.authSecret, (err, decryptedPayload) => {
+    if (err) {
+      throw err;
+    }
+
+    callback({ _id: decryptedPayload.id });
+  });
 };
 
 module.exports = {
@@ -54,4 +76,6 @@ module.exports = {
   comparePassword,
   saveUser,
   findUser,
+  generateJWT,
+  verifyJWT,
 };

@@ -1,14 +1,18 @@
 import React, { Component } from "react";
-import { Container } from "reactstrap";
+import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
 import { connect } from "react-redux";
-import { getProjects } from "../actions/projectActions";
+import { getSearchProjects, deleteProject } from "../actions/projectActions";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-export class ProjectList extends Component {
+export class SearchProjectList extends Component {
   componentDidMount() {
-    this.props.getProjects();
+    this.props.getSearchProjects(this.props.query);
   }
+
+  onDeleteClick = (id) => {
+    this.props.deleteProject(id);
+  };
 
   setImgSource = (imgBlob) => {
     if (!imgBlob) {
@@ -29,14 +33,14 @@ export class ProjectList extends Component {
   };
 
   render() {
-    const { projects } = this.props;
+    const { projects } = this.props.project;
 
     return (
       <Container>
-        <h1 class="text-center">Projects List</h1>
+        <h1 class="text-center">Search result : {this.props.query}</h1>
         <ul className="project-list">
           {projects.map(({ _id, name, img }) => (
-            <Link to={{ pathname: "/projects/" + _id + "?#" }} key={_id}>
+            <Link to={{ pathname: "/projects/" + _id }} key={_id}>
               <li className="project-list-item">
                 <figure class="figure">
                   <div class="row">
@@ -61,13 +65,15 @@ export class ProjectList extends Component {
   }
 }
 
-ProjectList.propTypes = {
-  getProjects: PropTypes.func.isRequired,
+SearchProjectList.propTypes = {
+  getSearchProjects: PropTypes.func.isRequired,
   project: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  projects: state.project.projects,
+  project: state.project,
 });
 
-export default connect(mapStateToProps, { getProjects })(ProjectList);
+export default connect(mapStateToProps, { getSearchProjects, deleteProject })(
+  SearchProjectList
+);

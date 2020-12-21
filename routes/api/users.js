@@ -15,6 +15,11 @@ router.post("/signup", userControllers.signUpController);
 // @access public
 router.post("/signin", userControllers.signInController);
 
+// @route POST api/users/signin
+// @desc sign user out
+// @access public
+router.post("/signout", userControllers.signOutController);
+
 // @route GET api/users/data
 // @desc get data of the user in the current session
 // @access public

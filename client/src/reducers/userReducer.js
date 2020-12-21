@@ -11,6 +11,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         user: action.payload,
       };
+      case types.GET_USER_DATA:
+        return {
+          ...state,
+          user: action.payload
+        }
     default:
       return state;
   }

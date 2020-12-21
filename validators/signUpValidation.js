@@ -24,6 +24,9 @@ module.exports = (data) => {
   // Username checks
   if (isEmpty(data.username)) {
     inputErrors.username = "Please enter a username";
+  } else if (data.username.length > 15) {
+    inputErrors.username =
+      "Your username cannot be more than 15 characters long";
   }
 
   // Password checks

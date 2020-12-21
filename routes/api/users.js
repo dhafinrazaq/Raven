@@ -20,4 +20,9 @@ router.post("/signin", userControllers.signInController);
 // @access public
 router.get("/data", userControllers.getUserDataController);
 
+// @route GET /:username
+// @desc get data of the user in the current session
+// @access public
+router.get("/:username", userControllers.getAnyUserDataController);
+
 module.exports = router;

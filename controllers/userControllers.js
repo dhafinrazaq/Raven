@@ -67,11 +67,9 @@ const signUpController = (req, res) => {
 
   const checkIfUsernameExists = (passwordHash) => (user) => {
     if (user) {
-      return res
-        .status(400)
-        .json({
-          username: "That username already exists, please try another.",
-        });
+      return res.status(400).json({
+        username: "That username already exists, please try another.",
+      });
     }
     filterByEmail(passwordHash);
   };
@@ -118,7 +116,9 @@ const signInController = (req, res) => {
 
   const authenticateUser = (user) => (isMatch) => {
     if (!isMatch) {
-      return res.status(403).json({ password: "The password that you've entered is incorrect." });
+      return res
+        .status(403)
+        .json({ password: "The password that you've entered is incorrect." });
     }
 
     userUtils.generateJWT(user, keys.authTTL, setCookieAndSendResponse(user));
@@ -126,12 +126,10 @@ const signInController = (req, res) => {
 
   const checkIfUserIsValid = (user) => {
     if (!user) {
-      return res
-        .status(400)
-        .json({
-          uid:
-            "The email address or username that you've entered doesn't match any account.",
-        });
+      return res.status(400).json({
+        uid:
+          "The email address or username that you've entered doesn't match any account.",
+      });
     }
 
     userUtils.comparePassword(
@@ -162,8 +160,22 @@ const getUserDataController = (req, res) => {
   userUtils.verifyJWT(req.cookies.authentication, getUserData);
 };
 
+const getAnyUserDataController = (req, res) => {
+  const sendResponse = (user) => {
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "User does not exist in the database" });
+    }
+    return res.json(user);
+  };
+  const conditionForUser = { username: req.params.username };
+  userUtils.findUser(conditionForUser, false, sendResponse);
+};
+
 module.exports = {
   signUpController,
   signInController,
   getUserDataController,
+  getAnyUserDataController,
 };

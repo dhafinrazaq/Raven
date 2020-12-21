@@ -32,3 +32,11 @@ export const signIn = (userFormData, resetState, setError) => (dispatch) => {
       setError(err.response.data);
     });
 };
+export const getAnyUserDataController = (username) => (dispatch) => {
+  axios.get(`/api/users/${username}`).then((res) => {
+    dispatch({
+      type: types.GET_USER_DATA,
+      payload: res.data,
+    });
+  });
+};

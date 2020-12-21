@@ -17,9 +17,8 @@ const signUpController = (req, res) => {
   }
 
   const userData = req.body;
-  const filterForExistingUser = {
-    $or: [{ username: userData.username }, { email: userData.email }],
-  };
+  const filterForExistingUsername = { username: userData.username };
+  const filterForExistingEmail = { email: userData.email };
 
   const setCookieAndSendResponse = (newUser) => (err, token) => {
     if (err) {
@@ -48,23 +47,44 @@ const signUpController = (req, res) => {
     userUtils.saveUser(userData, passwordHash, getJWT);
   };
 
-  const checkIfUserExists = (passwordHash) => (user) => {
+  const checkIfEmailExists = (passwordHash) => (user) => {
     if (user) {
-      return res.json({ uid: "That username or email already exists" });
+      return res
+        .status(400)
+        .json({ email: "That email already exists, please try another." });
     }
 
     saveUser(passwordHash);
   };
 
-  const getUser = (passwordHash) => {
+  const filterByEmail = (passwordHash) => {
     userUtils.findUser(
-      filterForExistingUser,
+      filterForExistingEmail,
       false,
-      checkIfUserExists(passwordHash)
+      checkIfEmailExists(passwordHash)
     );
   };
 
-  userUtils.getBcryptHash(userData.password, getUser);
+  const checkIfUsernameExists = (passwordHash) => (user) => {
+    if (user) {
+      return res
+        .status(400)
+        .json({
+          username: "That username already exists, please try another.",
+        });
+    }
+    filterByEmail(passwordHash);
+  };
+
+  const filterByUsername = (passwordHash) => {
+    userUtils.findUser(
+      filterForExistingUsername,
+      false,
+      checkIfUsernameExists(passwordHash)
+    );
+  };
+
+  userUtils.getBcryptHash(userData.password, filterByUsername);
 };
 
 const signInController = (req, res) => {
@@ -98,7 +118,7 @@ const signInController = (req, res) => {
 
   const authenticateUser = (user) => (isMatch) => {
     if (!isMatch) {
-      return res.status(403).json({ password: "Incorrect password entered" });
+      return res.status(403).json({ password: "The password that you've entered is incorrect." });
     }
 
     userUtils.generateJWT(user, keys.authTTL, setCookieAndSendResponse(user));
@@ -108,7 +128,10 @@ const signInController = (req, res) => {
     if (!user) {
       return res
         .status(400)
-        .json({ uid: "The specified username or email does not exist" });
+        .json({
+          uid:
+            "The email address or username that you've entered doesn't match any account.",
+        });
     }
 
     userUtils.comparePassword(

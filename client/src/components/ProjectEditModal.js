@@ -20,6 +20,16 @@ export class ProjectModal extends Component {
     description: this.props.project.project.description,
   };
 
+  componentDidMount() {
+    this.props.getProject(this.props.id).then(() => {
+      this.setState({
+        ...this.state,
+        name: this.props.project.project.name,
+        description: this.props.project.project.description,
+      });
+    });
+  }
+
   toggle = () => {
     this.setState({
       modal: !this.state.modal,

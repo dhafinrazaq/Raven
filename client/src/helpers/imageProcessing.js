@@ -2,7 +2,7 @@ export const getImgSource = (project) => {
   const { img } = project;
 
   if (!img) {
-    return "";
+    return "https://imgur.com/Zeuoreq.png";
   }
 
   var base64Flag = "data:image/jpeg;base64,";

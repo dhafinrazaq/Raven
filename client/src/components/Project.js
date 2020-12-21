@@ -38,7 +38,7 @@ export class Project extends Component {
         >
           Delete
         </Button>
-        <ProjectEditModal></ProjectEditModal>
+        <ProjectEditModal id={this.props.id}></ProjectEditModal>
         <div class="row">
           <div class="col-sm-8">
             <ProjectChangeImageModal

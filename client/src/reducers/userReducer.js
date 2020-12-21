@@ -1,6 +1,7 @@
 import * as types from "../actions/types";
 
 const initialState = {
+  isLoggedIn: false,
   user: {},
 };
 
@@ -10,12 +11,14 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload,
+        isLoggedIn: true,
       };
-      case types.GET_USER_DATA:
-        return {
-          ...state,
-          user: action.payload
-        }
+    case types.GET_USER_DATA:
+      return {
+        ...state,
+        user: action.payload,
+        isLoggedIn: true,
+      };
     default:
       return state;
   }

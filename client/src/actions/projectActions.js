@@ -12,9 +12,9 @@ import {
 } from "./types";
 import { getImgSource } from "../helpers/imageProcessing";
 
-export const getProjects = () => (dispatch) => {
+export const getProjects = () => async (dispatch) => {
   dispatch(setProjectsLoading());
-  axios.get("/api/projects").then((res) =>
+  await axios.get("/api/projects").then((res) =>
     dispatch({
       type: GET_PROJECTS,
       payload: res.data,

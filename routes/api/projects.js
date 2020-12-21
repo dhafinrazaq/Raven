@@ -4,6 +4,9 @@ const path = require("path");
 
 const router = express.Router();
 
+// Get utility functions
+const userUtils = require("../../util/userUtils");
+
 // project model
 const Project = require("../../models/Project");
 

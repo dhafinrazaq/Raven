@@ -32,11 +32,36 @@ export const signIn = (userFormData, resetState, setError) => (dispatch) => {
       setError(err.response.data);
     });
 };
-export const getAnyUserDataController = (username) => (dispatch) => {
+
+export const getSpecifiedUserDataController = (username) => (dispatch) => {
   axios.get(`/api/users/${username}`).then((res) => {
     dispatch({
-      type: types.GET_USER_DATA,
+      type: types.GET_SPECIFIED_USER_DATA,
       payload: res.data,
     });
   });
+};
+
+export const signOut = () => (dispatch) => {
+  axios.post("/api/users/signout", {}).then((res) => {
+    console.log(res.data.status);
+  });
+};
+
+export const fetchUserData = () => (dispatch) => {
+  axios
+    .get("/api/users/data")
+    .then((res) => {
+      dispatch({
+        type: types.GET_USER_DATA,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      // if (shouldLogOut) {
+      if (!window.location.pathname === "/account") {
+        window.location.href = "/account";
+      }
+      // }
+    });
 };

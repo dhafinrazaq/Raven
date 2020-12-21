@@ -18,7 +18,6 @@ export class ProjectModal extends Component {
     modal: false,
     name: "",
     description: "",
-    // projectImage: "",
   };
 
   toggle = () => {

@@ -1,4 +1,5 @@
 const keys = require("../config/keys");
+const Project = require("../models/Project");
 
 // Get utility functions
 const userUtils = require("../util/userUtils");
@@ -6,6 +7,7 @@ const userUtils = require("../util/userUtils");
 // Get input validation functions
 const validateSignUpInput = require("../validators/signUpValidation");
 const validateSignInInput = require("../validators/signInValidation");
+const { call } = require("ramda");
 
 const signUpController = (req, res) => {
   // Form validation
@@ -142,6 +144,18 @@ const signInController = (req, res) => {
   userUtils.findUser(filterForExistingUser, true, checkIfUserIsValid);
 };
 
+const signOutController = (req, res) => {
+  const removeCookiesAndSendResponse = () => {
+    res.clearCookie("authentication");
+
+    return res.json({
+      status: "Log Out Successful",
+    });
+  };
+
+  removeCookiesAndSendResponse();
+};
+
 const getUserDataController = (req, res) => {
   const sendResponse = (user) => {
     if (!user) {
@@ -161,13 +175,15 @@ const getUserDataController = (req, res) => {
 };
 
 const getAnyUserDataController = (req, res) => {
-  const sendResponse = (user) => {
-    if (!user) {
+  const sendResponse = (currentUser) => {
+    if (!currentUser) {
       return res
         .status(404)
         .json({ error: "User does not exist in the database" });
     }
-    return res.json(user);
+    currentUser.populate("projects").execPopulate();
+    console.log(currentUser.populate("projects"));
+    return res.json(currentUser);
   };
   const conditionForUser = { username: req.params.username };
   userUtils.findUser(conditionForUser, false, sendResponse);
@@ -176,6 +192,7 @@ const getAnyUserDataController = (req, res) => {
 module.exports = {
   signUpController,
   signInController,
+  signOutController,
   getUserDataController,
   getAnyUserDataController,
 };

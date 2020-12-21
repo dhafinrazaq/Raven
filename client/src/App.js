@@ -6,17 +6,22 @@ import SearchProjectList from "./components/SearchProjectList";
 import ProjectList from "./components/ProjectList";
 import Project from "./components/Project";
 import ProjectModal from "./components/ProjectModal";
+import UserProfile from "./components/account/UserProfile";
 import SignIn from "./components/account/SignIn";
 import { Container } from "reactstrap";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import React from "react";
+import React, { Component } from "react";
+import { fetchUserData } from "./actions/userActions";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-import { Provider } from "react-redux";
-import store from "./store";
+class App extends Component {
+  componentDidMount() {
+    this.props.fetchUserData();
+  }
 
-function App() {
-  return (
-    <Provider store={store}>
+  render() {
+    return (
       <Router>
         <div className="App">
           <AppNavbar />
@@ -59,11 +64,31 @@ function App() {
                 </React.Fragment>
               )}
             />
+            <Route
+              exact
+              path="/account/:username"
+              render={(props) => (
+                <React.Fragment>
+                  <UserProfile query={props.match.params.username} />
+                </React.Fragment>
+              )}
+            />
           </Container>
         </div>
       </Router>
-    </Provider>
-  );
+    );
+  }
 }
 
-export default App;
+App.propTypes = {
+  getUserData: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  user: state.user.user,
+});
+
+export default connect(mapStateToProps, {
+  fetchUserData,
+})(App);

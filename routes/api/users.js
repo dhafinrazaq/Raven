@@ -1,5 +1,6 @@
 // Import statements
 const express = require("express");
+const User = require("../../models/User");
 const router = express.Router();
 
 // Get all user controllers that manipulate the user database
@@ -15,6 +16,11 @@ router.post("/signup", userControllers.signUpController);
 // @access public
 router.post("/signin", userControllers.signInController);
 
+// @route POST api/users/signin
+// @desc sign user out
+// @access public
+router.post("/signout", userControllers.signOutController);
+
 // @route GET api/users/data
 // @desc get data of the user in the current session
 // @access public
@@ -23,6 +29,14 @@ router.get("/data", userControllers.getUserDataController);
 // @route GET /:username
 // @desc get data of the user in the current session
 // @access public
-router.get("/:username", userControllers.getAnyUserDataController);
+// router.get("/:username", userControllers.getAnyUserDataController);
+router.get("/:username", async (req, res) => {
+  const getUserWithPopulate = function (query) {
+    return User.find({ username: query }).populate("projects");
+  };
+
+  const result = await getUserWithPopulate(req.params.username);
+  res.json({ user: result });
+});
 
 module.exports = router;

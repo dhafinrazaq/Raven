@@ -1,48 +1,54 @@
 import React, { Component } from "react";
-import { getAnyUserDataController } from "../actions/userActions";
+import { getSpecifiedUserDataController } from "../../actions/userActions";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 class UserProfile extends Component {
   componentDidMount() {
-    this.props.getAnyUserDataController(this.props.query);
+    console.log("called");
+    this.props.getSpecifiedUserDataController(this.props.query);
   }
 
   render() {
     return (
       <React.Fragment>
-        <div>{this.props.userObserved}</div>
+        {console.log("rendered")}
+        {/* {console.log(this.props.userObserved)} */}
+        <div>
+          {this.props.userObserved ? this.props.userObserved.username : ""}
+        </div>
         <ul>
-          {this.props.userObservedprojects.map(({ _id, name, img }) => (
-            <Link to={{ pathname: "/projects/" + _id }} key={_id}>
-              <li className="project-list-item">
-                <figure class="figure">
-                  <div class="row">
-                    <div class="col-md-8 offset-md-2">
-                      <img
-                        src={this.setImgSource(img)}
-                        class="figure-img img-fluid mx-auto"
-                        alt="No image"
-                        style={{ maxHeight: "100%", maxWidth: "100%" }}
-                      ></img>
-                    </div>
-                  </div>
-
-                  <h4 class="text-center">{name}</h4>
-                </figure>
-              </li>
-            </Link>
-          ))}
+          {this.props.userObserved
+            ? this.props.userObserved.projects
+                .populate()
+                .map(({ _id, name, img }) => (
+                  <Link to={{ pathname: "/projects/" + _id }} key={_id}>
+                    <li className="project-list-item">
+                      <figure class="figure">
+                        <h4 class="text-center">{name}</h4>
+                      </figure>
+                    </li>
+                  </Link>
+                ))
+            : ""}
         </ul>
       </React.Fragment>
     );
   }
 }
 
+UserProfile.propTypes = {
+  getSpecifiedUserDataController: PropTypes.func.isRequired,
+  userObserved: PropTypes.object.isRequired,
+};
+
 const mapStateToProps = (state) => ({
-  userObserved: state.user,
-  projects: state.user.user.projects,
+  userObserved: state.user.userDetail,
+  // userObservedName: state.user.userDetail.username,
+  // userObservedProjects: state.user.userDetail.projects,
 });
 
-export default connect(mapStateToProps, { getAnyUserDataController })(
+export default connect(mapStateToProps, { getSpecifiedUserDataController })(
   UserProfile
 );

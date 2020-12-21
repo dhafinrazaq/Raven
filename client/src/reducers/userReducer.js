@@ -14,8 +14,14 @@ const reducer = (state = initialState, action) => {
     case types.GET_USER_DATA:
       return {
         ...state,
-        projects: action.payload,
+        user: action.payload,
       };
+    case types.GET_SPECIFIED_USER_DATA:
+      return {
+        ...state,
+        userDetail: action.payload,
+      };
+
     default:
       return state;
   }

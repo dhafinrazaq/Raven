@@ -6,6 +6,7 @@ import SearchProjectList from "./components/SearchProjectList";
 import ProjectList from "./components/ProjectList";
 import Project from "./components/Project";
 import ProjectModal from "./components/ProjectModal";
+import SignIn from "./components/account/SignIn";
 import { Container } from "reactstrap";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import React from "react";
@@ -46,6 +47,15 @@ function App() {
                 <React.Fragment>
                   <ProjectModal></ProjectModal>
                   <SearchProjectList query={props.match.params.query} />
+                </React.Fragment>
+              )}
+            />
+            <Route
+              exact
+              path="/account"
+              render={(props) => (
+                <React.Fragment>
+                  <SignIn></SignIn>
                 </React.Fragment>
               )}
             />

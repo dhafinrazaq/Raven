@@ -62,6 +62,7 @@ export class ProjectModal extends Component {
               <FormGroup>
                 <Label for="project">Project</Label>
                 <Input
+                  required
                   type="text"
                   name="name"
                   id="project"
@@ -71,6 +72,7 @@ export class ProjectModal extends Component {
                 ></Input>
                 <Label for="description">Description</Label>
                 <Input
+                  required
                   type="text"
                   name="description"
                   id="description"

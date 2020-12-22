@@ -32,11 +32,11 @@ router.get("/data", userControllers.getUserDataController);
 // router.get("/:username", userControllers.getAnyUserDataController);
 router.get("/:username", async (req, res) => {
   const getUserWithPopulate = function (query) {
-    return User.find({ username: query }).populate("projects");
+    return User.findOne({ username: query }).populate("projects");
   };
 
   const result = await getUserWithPopulate(req.params.username);
-  res.json({ user: result });
+  res.json({ viewedUser: result });
 });
 
 module.exports = router;

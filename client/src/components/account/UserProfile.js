@@ -16,13 +16,14 @@ class UserProfile extends Component {
         {console.log("rendered")}
         {/* {console.log(this.props.userObserved)} */}
         <div>
-          {this.props.userObserved ? this.props.userObserved.username : ""}
+          {this.props.userObserved
+            ? this.props.userObserved.viewedUser.username
+            : ""}
         </div>
         <ul>
           {this.props.userObserved
-            ? this.props.userObserved.projects
-                .populate()
-                .map(({ _id, name, img }) => (
+            ? this.props.userObserved.viewedUser.projects.map(
+                ({ _id, name, img }) => (
                   <Link to={{ pathname: "/projects/" + _id }} key={_id}>
                     <li className="project-list-item">
                       <figure class="figure">
@@ -30,7 +31,8 @@ class UserProfile extends Component {
                       </figure>
                     </li>
                   </Link>
-                ))
+                )
+              )
             : ""}
         </ul>
       </React.Fragment>

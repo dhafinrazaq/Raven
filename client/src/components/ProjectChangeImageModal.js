@@ -41,17 +41,41 @@ export class ProjectChangeImageModal extends Component {
     });
   };
 
-  render() {
-    return (
-      <div>
-        <div style={{ marginBottom: "2rem" }} onClick={this.toggle}>
+  displayImage = () => {
+    if (
+      this.props.project.author &&
+      this.props.currentUserId === this.props.project.author._id
+    ) {
+      return (
+        <div>
+          <div style={{ marginBottom: "2rem" }} onClick={this.toggle}>
+            <img
+              src={this.props.imageSrc}
+              class="figure-img img-fluid mx-auto project-detail-image"
+              alt="Click here to change image"
+              style={{ maxHeight: "200px", maxWidth: "200px" }}
+            ></img>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div style={{ marginBottom: "2rem" }}>
           <img
             src={this.props.imageSrc}
-            class="figure-img img-fluid mx-auto project-detail-image"
-            alt="Click here to change image"
+            class="figure-img img-fluid mx-auto"
+            alt="Project Image"
             style={{ maxHeight: "200px", maxWidth: "200px" }}
           ></img>
         </div>
+      );
+    }
+  };
+
+  render() {
+    return (
+      <div>
+        {this.displayImage()}
 
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Change Project Poster</ModalHeader>
@@ -83,6 +107,7 @@ export class ProjectChangeImageModal extends Component {
 const mapsStateToProps = (state) => ({
   project: state.project.project,
   imageSrc: state.project.imageSrc,
+  currentUserId: state.user.user._id,
 });
 
 export default connect(mapsStateToProps, {

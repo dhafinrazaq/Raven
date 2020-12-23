@@ -19,6 +19,16 @@ const ProjectSchema = new Schema({
     data: Buffer,
     contentType: String,
   },
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users",
+  },
+  collaborators: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+    },
+  ],
 });
 
 module.exports = Project = mongoose.model("project", ProjectSchema);

@@ -19,6 +19,12 @@ const reducer = (state = initialState, action) => {
         user: action.payload,
         isLoggedIn: true,
       };
+    case types.GET_SPECIFIED_USER_DATA:
+      return {
+        ...state,
+        userDetail: action.payload,
+      };
+
     default:
       return state;
   }

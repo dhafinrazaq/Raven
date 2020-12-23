@@ -20,6 +20,12 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  projects: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "project",
+    },
+  ],
 });
 
 // Exports the model using the specified Schema

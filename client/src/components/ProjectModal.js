@@ -18,7 +18,6 @@ export class ProjectModal extends Component {
     modal: false,
     name: "",
     description: "",
-    // projectImage: "",
   };
 
   toggle = () => {
@@ -42,6 +41,7 @@ export class ProjectModal extends Component {
       name: this.state.name,
       description: this.state.description,
       image: this.state.image,
+      authorId: this.props.currentUserId,
     };
 
     this.props.addProject(newProject);
@@ -99,6 +99,7 @@ export class ProjectModal extends Component {
 const mapsStateToProps = (state) => ({
   project: state.project,
   isLoggedIn: state.user.isLoggedIn,
+  currentUserId: state.user.user._id,
 });
 
 export default connect(mapsStateToProps, { addProject })(ProjectModal);

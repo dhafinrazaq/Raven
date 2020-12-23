@@ -4,8 +4,12 @@ const path = require("path");
 
 const router = express.Router();
 
+// Get utility functions
+const userUtils = require("../../util/userUtils");
+
 // project model
 const Project = require("../../models/Project");
+const User = require("../../models/User");
 
 // @route GET api/projects
 // @desc get all projects
@@ -24,9 +28,18 @@ router.post("/", (req, res) => {
   const newProject = new Project({
     name: req.body.name,
     description: req.body.description,
+    author: req.body.authorId,
   });
 
-  newProject.save().then((project) => res.json(project));
+  newProject.save().then((project) => {
+    res.json(project);
+    User.findById(req.body.authorId)
+      .then((author) => {
+        author.projects.push(project._id);
+        author.save();
+      })
+      .catch((err) => res.json(err));
+  });
 });
 
 router.delete("/:id", (req, res) => {
@@ -38,22 +51,28 @@ router.delete("/:id", (req, res) => {
 // @route GET api/projects/:id
 // @desc get a project
 // @access public
-router.get("/:id", (req, res) => {
-  Project.findById(req.params.id)
-    .then((project) => res.json(project))
-    .catch((err) => res.status(404).json({ success: false }));
+router.get("/:id", async (req, res) => {
+  const getProjectWithPopulate = function (query) {
+    return Project.findById(query).populate("author");
+  };
+
+  const project = await getProjectWithPopulate(req.params.id);
+  res.json(project);
 });
 
 // @route PUT api/projects/:id
 // @desc update a project
 // @access public
-router.put("/:id", (req, res) => {
-  Project.findByIdAndUpdate(req.params.id, req.body, {
-    returnOriginal: false,
-    new: true,
-  })
-    .then((project) => res.json(project))
-    .catch((err) => res.status(404).json({ success: false }));
+router.put("/:id", async (req, res) => {
+  const putProjectWithPopulate = function (query, updated) {
+    return Project.findByIdAndUpdate(query, updated, {
+      returnOriginal: false,
+      new: true,
+    }).populate("author");
+  };
+
+  const project = await putProjectWithPopulate(req.params.id, req.body);
+  res.json(project);
 });
 
 const fs = require("fs");
@@ -77,24 +96,23 @@ router.post("/upload", upload.single("file"), async (req, res, next) => {
     fs.createWriteStream(`${__dirname}/../../public/images/${fileName}`)
   );
 
-  Project.findByIdAndUpdate(
-    id,
-    {
-      img: {
-        data: fs.readFileSync(
-          path.join(`${__dirname}/../../public/images/${fileName}`)
-        ),
-        contentType: "image/jpg",
-      },
-    },
-    {
+  const putProjectWithPopulate = function (query, updated) {
+    return Project.findByIdAndUpdate(query, updated, {
       returnOriginal: false,
       new: true,
-    }
-  )
-    .then((project) => res.json(project))
-    .catch((err) => res.status(404).json({ success: false }));
-  // res.redirect("/");
+    }).populate("author");
+  };
+
+  const project = await putProjectWithPopulate(id, {
+    img: {
+      data: fs.readFileSync(
+        path.join(`${__dirname}/../../public/images/${fileName}`)
+      ),
+      contentType: "image/jpg",
+    },
+  });
+  // console.log(project);
+  res.json(project);
 });
 
 module.exports = router;

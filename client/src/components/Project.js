@@ -25,20 +25,33 @@ export class Project extends Component {
     window.location.href = "/";
   };
 
+  displayEditAndDeleteButton = () => {
+    if (
+      this.props.project.author &&
+      this.props.currentUserId === this.props.project.author._id
+    ) {
+      return (
+        <div>
+          <Button
+            className="remove-btn"
+            color="danger"
+            onClick={() => this.onDeleteClick(this.props.project._id)}
+          >
+            Delete
+          </Button>
+          <ProjectEditModal id={this.props.project._id}></ProjectEditModal>
+        </div>
+      );
+    }
+  };
+
   render() {
     const { name, _id } = this.props.project;
 
     return (
       <div>
         <h1 class="text-center">{name}</h1>
-        <Button
-          className="remove-btn"
-          color="danger"
-          onClick={() => this.onDeleteClick(_id)}
-        >
-          Delete
-        </Button>
-        <ProjectEditModal id={this.props.id}></ProjectEditModal>
+        {this.displayEditAndDeleteButton()}
         <div class="row">
           <div class="col-sm-8">
             <ProjectChangeImageModal
@@ -66,6 +79,7 @@ Project.propTypes = {
 const mapStateToProps = (state) => ({
   project: state.project.project,
   imageSrc: state.project.imageSrc,
+  currentUserId: state.user.user._id,
 });
 
 export default connect(mapStateToProps, {

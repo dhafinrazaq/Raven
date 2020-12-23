@@ -16,6 +16,7 @@ import {
   Form,
   Input,
 } from "reactstrap";
+import { Link } from "react-router-dom";
 
 export class AppNavbar extends Component {
   state = {
@@ -45,7 +46,16 @@ export class AppNavbar extends Component {
   displayUsername = () => {
     const username = this.props.user.username;
     if (username) {
-      return username;
+      return (
+        <Link
+          className="navbar-link"
+          to={{
+            pathname: "/account/" + username,
+          }}
+        >
+          {username}
+        </Link>
+      );
     }
 
     return "";
@@ -57,21 +67,6 @@ export class AppNavbar extends Component {
       search: "",
     });
   };
-
-  // componentDidMount() {
-  //   this.props.fetchUserData().then(() => {
-  //     console.log(this.props.user);
-  //     this.setState({ isLoggedIn: Object.entries(this.props.user).length > 0 });
-  //   });
-  // }
-
-  // getSnapshotBeforeUpdate(prevProps, prevState) {
-  //   if (prevState.isLoggedIn) {
-  //     this.setState({isLoggedIn: true});
-  //   }
-
-  //   return null;
-  // }
 
   displayLogin = () => {
     if (this.props.isLoggedIn) {
@@ -104,8 +99,17 @@ export class AppNavbar extends Component {
       <div>
         <Navbar color="dark" dark expand="sm" className="mb-5">
           <Container>
-            <img src="/RavenLogo.svg" height="50" width="50" className="mr-3" />
-            <NavbarBrand href="/">Raven</NavbarBrand>
+            <NavbarBrand>
+              <Link className="navbar-link" to={{ pathname: "/" }}>
+                <img
+                  src="/RavenLogo.svg"
+                  height="50"
+                  width="50"
+                  className="mr-3"
+                />
+                Raven
+              </Link>
+            </NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="ml-auto" navbar>

@@ -14,6 +14,7 @@ const initialState = {
   loading: false,
   project: {},
   img: {},
+  imageSrc: "",
 };
 
 const reducer = function (state = initialState, action) {
@@ -23,6 +24,8 @@ const reducer = function (state = initialState, action) {
         ...state,
         projects: action.payload,
         loading: false,
+        project: {},
+        imageSrc: "",
       };
     case DELETE_PROJECT:
       return {

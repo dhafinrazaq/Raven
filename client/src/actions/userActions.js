@@ -36,6 +36,15 @@ export const signIn = (userFormData, resetState, setError) => (dispatch) => {
     });
 };
 
+export const getSpecifiedUserDataController = (username) => (dispatch) => {
+  axios.get(`/api/users/${username}`).then((res) => {
+    dispatch({
+      type: types.GET_SPECIFIED_USER_DATA,
+      payload: res.data,
+    });
+  });
+};
+
 export const signOut = (resetState) => (dispatch) => {
   axios.post("/api/users/signout", {}).then((res) => {
     if (window.location.pathname !== "/") {

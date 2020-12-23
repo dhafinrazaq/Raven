@@ -1,4 +1,5 @@
 const keys = require("../config/keys");
+const Project = require("../models/Project");
 
 // Get utility functions
 const userUtils = require("../util/userUtils");
@@ -6,6 +7,7 @@ const userUtils = require("../util/userUtils");
 // Get input validation functions
 const validateSignUpInput = require("../validators/signUpValidation");
 const validateSignInInput = require("../validators/signInValidation");
+const { call } = require("ramda");
 
 const signUpController = (req, res) => {
   // Form validation
@@ -172,9 +174,25 @@ const getUserDataController = (req, res) => {
   userUtils.verifyJWT(req.cookies.authentication, getUserData);
 };
 
+const getAnyUserDataController = (req, res) => {
+  const sendResponse = (currentUser) => {
+    if (!currentUser) {
+      return res
+        .status(404)
+        .json({ error: "User does not exist in the database" });
+    }
+    currentUser.populate("projects").execPopulate();
+    console.log(currentUser.populate("projects"));
+    return res.json(currentUser);
+  };
+  const conditionForUser = { username: req.params.username };
+  userUtils.findUser(conditionForUser, false, sendResponse);
+};
+
 module.exports = {
   signUpController,
   signInController,
   signOutController,
   getUserDataController,
+  getAnyUserDataController,
 };

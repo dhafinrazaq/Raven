@@ -57,9 +57,9 @@ export const fetchUserData = () => async (dispatch) => {
     })
     .catch((err) => {
       // if (shouldLogOut) {
-      if (window.location.pathname !== "/account") {
-        window.location.href = "/account";
-      }
+      // if (window.location.pathname !== "/account") {
+      //   window.location.href = "/account";
+      // }
       // }
     });
 };

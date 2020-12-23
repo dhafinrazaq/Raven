@@ -26,7 +26,10 @@ export const signIn = (userFormData, resetState, setError) => (dispatch) => {
         payload: res.data,
       });
       resetState();
-      window.location.href = "/";
+
+      if (window.location.pathname !== "/") {
+        window.location.href = "/";
+      }
     })
     .catch((err) => {
       setError(err.response.data);
@@ -42,14 +45,18 @@ export const getSpecifiedUserDataController = (username) => (dispatch) => {
   });
 };
 
-export const signOut = () => (dispatch) => {
+export const signOut = (resetState) => (dispatch) => {
   axios.post("/api/users/signout", {}).then((res) => {
-    console.log(res.data.status);
+    if (window.location.pathname !== "/") {
+      window.location.href = "/";
+    }
+
+    resetState();
   });
 };
 
-export const fetchUserData = () => (dispatch) => {
-  axios
+export const fetchUserData = () => async (dispatch) => {
+  await axios
     .get("/api/users/data")
     .then((res) => {
       dispatch({
@@ -59,9 +66,9 @@ export const fetchUserData = () => (dispatch) => {
     })
     .catch((err) => {
       // if (shouldLogOut) {
-      if (!window.location.pathname === "/account") {
-        window.location.href = "/account";
-      }
+      // if (window.location.pathname !== "/account") {
+      //   window.location.href = "/account";
+      // }
       // }
     });
 };

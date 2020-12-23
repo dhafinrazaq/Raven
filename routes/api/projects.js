@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
+const User = require("../../models/User");
 
 const router = express.Router();
 
@@ -27,9 +28,18 @@ router.post("/", (req, res) => {
   const newProject = new Project({
     name: req.body.name,
     description: req.body.description,
+    author: req.body.authorId,
   });
 
-  newProject.save().then((project) => res.json(project));
+  newProject.save().then((project) => {
+    res.json(project);
+    User.findById(req.body.authorId)
+      .then((author) => {
+        author.projects.push(project._id);
+        author.save();
+      })
+      .catch((err) => res.json(err));
+  });
 });
 
 router.delete("/:id", (req, res) => {

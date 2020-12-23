@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { signOut } from "../actions/userActions";
+import { signOut, fetchUserData } from "../actions/userActions";
 import {
   Collapse,
   Label,
@@ -51,15 +51,35 @@ export class AppNavbar extends Component {
     return "";
   };
 
+  resetState = () => {
+    this.setState({
+      isOpen: false,
+      search: "",
+    });
+  };
+
+  // componentDidMount() {
+  //   this.props.fetchUserData().then(() => {
+  //     console.log(this.props.user);
+  //     this.setState({ isLoggedIn: Object.entries(this.props.user).length > 0 });
+  //   });
+  // }
+
+  // getSnapshotBeforeUpdate(prevProps, prevState) {
+  //   if (prevState.isLoggedIn) {
+  //     this.setState({isLoggedIn: true});
+  //   }
+
+  //   return null;
+  // }
+
   displayLogin = () => {
-    const isLoggedIn = Object.entries(this.props.user).length > 0;
-    if (isLoggedIn) {
+    if (this.props.isLoggedIn) {
       return (
         <Button
           color="danger"
           onClick={() => {
-            this.props.signOut();
-            window.location.href = "/";
+            this.props.signOut(this.resetState);
           }}
           className="ml-4"
         >
@@ -128,6 +148,7 @@ AppNavbar.propTypes = {
 
 const mapStateToProps = (state) => ({
   user: state.user.user,
+  isLoggedIn: state.user.isLoggedIn,
 });
 
-export default connect(mapStateToProps, { signOut })(AppNavbar);
+export default connect(mapStateToProps, { signOut, fetchUserData })(AppNavbar);

@@ -84,7 +84,7 @@ export class ProjectContributorSidebar extends Component {
 }
 
 ProjectContributorSidebar.propTypes = {
-  project: PropTypes.object.isRequired,
+  projectAuthor: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({

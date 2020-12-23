@@ -23,3 +23,12 @@
 .project-detail-image:hover {
   cursor: pointer;
 }
+
+.navbar-link {
+  color: white;
+}
+.navbar-link:hover {
+  cursor: pointer;
+  color: white;
+  text-decoration: none;
+}

@@ -6,15 +6,12 @@ import { connect } from "react-redux";
 
 class UserProfile extends Component {
   componentDidMount() {
-    console.log("called");
     this.props.getSpecifiedUserDataController(this.props.query);
   }
 
   render() {
     return (
       <React.Fragment>
-        {console.log("rendered")}
-        {/* {console.log(this.props.userObserved)} */}
         <div>
           {this.props.userObserved
             ? this.props.userObserved.viewedUser.username

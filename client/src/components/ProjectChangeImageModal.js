@@ -42,7 +42,10 @@ export class ProjectChangeImageModal extends Component {
   };
 
   displayImage = () => {
-    if (this.props.currentUserId === this.props.project.author) {
+    if (
+      this.props.project.author &&
+      this.props.currentUserId === this.props.project.author._id
+    ) {
       return (
         <div>
           <div style={{ marginBottom: "2rem" }} onClick={this.toggle}>

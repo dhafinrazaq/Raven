@@ -26,7 +26,10 @@ export class Project extends Component {
   };
 
   displayEditAndDeleteButton = () => {
-    if (this.props.currentUserId === this.props.project.author) {
+    if (
+      this.props.project.author &&
+      this.props.currentUserId === this.props.project.author._id
+    ) {
       return (
         <div>
           <Button

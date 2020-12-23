@@ -1,7 +1,6 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
-const User = require("../../models/User");
 
 const router = express.Router();
 
@@ -10,6 +9,7 @@ const userUtils = require("../../util/userUtils");
 
 // project model
 const Project = require("../../models/Project");
+const User = require("../../models/User");
 
 // @route GET api/projects
 // @desc get all projects
@@ -51,10 +51,13 @@ router.delete("/:id", (req, res) => {
 // @route GET api/projects/:id
 // @desc get a project
 // @access public
-router.get("/:id", (req, res) => {
-  Project.findById(req.params.id)
-    .then((project) => res.json(project))
-    .catch((err) => res.status(404).json({ success: false }));
+router.get("/:id", async (req, res) => {
+  const getProjectWithPopulate = function (query) {
+    return Project.findById(query).populate("author");
+  };
+
+  const project = await getProjectWithPopulate(req.params.id);
+  res.json(project);
 });
 
 // @route PUT api/projects/:id

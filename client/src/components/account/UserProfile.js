@@ -24,7 +24,7 @@ class UserProfile extends Component {
           {this.props.userObserved
             ? this.props.userObserved.viewedUser.projects.map(
                 ({ _id, name, img }) => (
-                  <Link to={{ pathname: "/projects/" + _id }} key={_id}>
+                  <Link to={{ pathname: "/projects/" + _id + "?#" }} key={_id}>
                     <li className="project-list-item">
                       <figure class="figure">
                         <h4 class="text-center">{name}</h4>

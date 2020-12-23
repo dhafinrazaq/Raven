@@ -22,9 +22,13 @@ export class ProjectModal extends Component {
   };
 
   toggle = () => {
-    this.setState({
-      modal: !this.state.modal,
-    });
+    if (this.props.isLoggedIn) {
+      this.setState({
+        modal: !this.state.modal,
+      });
+    } else {
+      window.location.href = "/account";
+    }
   };
 
   onChange = (e) => {
@@ -94,6 +98,7 @@ export class ProjectModal extends Component {
 
 const mapsStateToProps = (state) => ({
   project: state.project,
+  isLoggedIn: state.user.isLoggedIn,
 });
 
 export default connect(mapsStateToProps, { addProject })(ProjectModal);

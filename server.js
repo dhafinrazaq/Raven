@@ -48,6 +48,7 @@ app.use(
 
 // Gets the URI of the MongoDB database used by app
 const db = require("./config/keys").mongoAtlasURI; // Can change to mongoAtlasURI to connect to cloud database
+console.log("db: " + db);
 
 // mongoDB settings
 const options = {

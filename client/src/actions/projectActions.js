@@ -11,6 +11,7 @@ import {
   UPDATE_PROJECT_IMAGE_SRC,
 } from "./types";
 import { getImgSource } from "../helpers/imageProcessing";
+import backendURI from "../../config";
 
 export const getProjects = () => async (dispatch) => {
   dispatch(setProjectsLoading());
@@ -24,12 +25,12 @@ export const getProjects = () => async (dispatch) => {
 
 export const deleteProject = (id) => (dispatch) => {
   axios
-    .delete(`/api/projects/${id}`)
+    .delete(`${backendURI}/api/projects/${id}`)
     .then((res) => dispatch({ type: DELETE_PROJECT, payload: id }));
 };
 
 export const addProject = (project) => (dispatch) => {
-  axios.post("/api/projects", project).then((res) =>
+  axios.post(`${backendURI}/api/projects`, project).then((res) =>
     dispatch({
       type: ADD_PROJECT,
       payload: res.data,
@@ -45,7 +46,7 @@ export const setProjectsLoading = () => {
 
 export const getProject = (id) => async (dispatch) => {
   dispatch(setProjectsLoading());
-  await axios.get(`/api/projects/${id}`).then((res) => {
+  await axios.get(`${backendURI}/api/projects/${id}`).then((res) => {
     dispatch({
       type: GET_PROJECT,
       payload: res.data,
@@ -54,7 +55,7 @@ export const getProject = (id) => async (dispatch) => {
 };
 
 export const editProject = (id, project) => (dispatch) => {
-  axios.put(`/api/projects/${id}`, project).then((res) => {
+  axios.put(`${backendURI}/api/projects/${id}`, project).then((res) => {
     dispatch({
       type: EDIT_PROJECT,
       payload: res.data,
@@ -63,7 +64,7 @@ export const editProject = (id, project) => (dispatch) => {
 };
 
 export const getSearchProjects = (query) => (dispatch) => {
-  axios.get(`/search/${query}`).then((res) =>
+  axios.get(`${backendURI}/search/${query}`).then((res) =>
     dispatch({
       type: GET_PROJECTS,
       payload: res.data,
@@ -71,7 +72,7 @@ export const getSearchProjects = (query) => (dispatch) => {
   );
 };
 export const editProjectImage = (project) => async (dispatch) => {
-  await axios.post(`/api/projects/upload`, project).then((res) => {
+  await axios.post(`${backendURI}/api/projects/upload`, project).then((res) => {
     dispatch({
       type: EDIT_PROJECT_IMAGE,
       payload: res.data,
@@ -80,7 +81,7 @@ export const editProjectImage = (project) => async (dispatch) => {
 };
 
 export const updateProjectImageSrc = (id) => async (dispatch) => {
-  await axios.get(`/api/projects/${id}`).then((res) => {
+  await axios.get(`${backendURI}/api/projects/${id}`).then((res) => {
     dispatch({
       type: UPDATE_PROJECT_IMAGE_SRC,
       imageSrc: getImgSource(res.data),

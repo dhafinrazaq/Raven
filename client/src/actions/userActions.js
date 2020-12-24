@@ -1,9 +1,10 @@
 import axios from "axios";
 import * as types from "./types";
+import backendURI from "../../config";
 
 export const signUp = (userFormData, resetState, setError) => (dispatch) => {
   axios
-    .post("/api/users/signup", userFormData)
+    .post(`${backendURI}/api/users/signup`, userFormData)
     .then((res) => {
       dispatch({
         type: types.SET_USER,
@@ -19,7 +20,7 @@ export const signUp = (userFormData, resetState, setError) => (dispatch) => {
 
 export const signIn = (userFormData, resetState, setError) => (dispatch) => {
   axios
-    .post("/api/users/signin", userFormData)
+    .post(`${backendURI}/api/users/signin`, userFormData)
     .then((res) => {
       dispatch({
         type: types.SET_USER,
@@ -37,7 +38,7 @@ export const signIn = (userFormData, resetState, setError) => (dispatch) => {
 };
 
 export const getSpecifiedUserDataController = (username) => (dispatch) => {
-  axios.get(`/api/users/${username}`).then((res) => {
+  axios.get(`${backendURI}/api/users/${username}`).then((res) => {
     dispatch({
       type: types.GET_SPECIFIED_USER_DATA,
       payload: res.data,
@@ -46,7 +47,7 @@ export const getSpecifiedUserDataController = (username) => (dispatch) => {
 };
 
 export const signOut = (resetState) => (dispatch) => {
-  axios.post("/api/users/signout", {}).then((res) => {
+  axios.post(`${backendURI}/api/users/signout`, {}).then((res) => {
     if (window.location.pathname !== "/") {
       window.location.href = "/";
     }
@@ -57,7 +58,7 @@ export const signOut = (resetState) => (dispatch) => {
 
 export const fetchUserData = () => async (dispatch) => {
   await axios
-    .get("/api/users/data")
+    .get(`${backendURI}/api/users/data`)
     .then((res) => {
       dispatch({
         type: types.GET_USER_DATA,

@@ -8,12 +8,14 @@ const keys = require("../config/keys");
 const getBcryptHash = (input, callback) => {
   bcrypt.genSalt(10, (err, salt) => {
     if (err) {
-      throw err;
+      // throw err;
+      console.log(err);
     }
 
     bcrypt.hash(input, salt, (err, hash) => {
       if (err) {
-        throw err;
+        // throw err;
+        console.log(err);
       }
 
       callback(hash);
@@ -64,7 +66,8 @@ const generateJWT = (userData, ttl, callback) => {
 const verifyJWT = (token, callback) => {
   jwt.verify(token, keys.authSecret, (err, decryptedPayload) => {
     if (err) {
-      throw err;
+      console.log(err);
+      // throw err;
     }
 
     callback({ _id: decryptedPayload.id });

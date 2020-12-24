@@ -63,7 +63,7 @@ export const editProject = (id, project) => (dispatch) => {
 };
 
 export const getSearchProjects = (query) => (dispatch) => {
-  axios.get(`/search/${query}`).then((res) =>
+  axios.get(`/api/search/${query}`).then((res) =>
     dispatch({
       type: GET_PROJECTS,
       payload: res.data,

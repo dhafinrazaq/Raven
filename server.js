@@ -15,7 +15,7 @@ const cors = require("cors");
 
 var corsOptions = {
   // Specifies the origin(s) from which a server request can occur aside from its own origin
-  origin: "http://localhost:3000",
+  origin: "https://ravenapp.netlify.app/",
   credentials: true,
 };
 

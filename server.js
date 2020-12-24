@@ -74,7 +74,7 @@ mongoose
 // Routes
 app.use("/api/users", usersRouter);
 app.use("/api/projects", projectsRouter);
-app.use("/search", searchRouter);
+app.use("/api/search", searchRouter);
 
 // Uses process.env.PORT if available otherwise 5000
 const port = process.env.PORT || 5000;

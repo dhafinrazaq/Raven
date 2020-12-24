@@ -47,9 +47,7 @@ export const getSpecifiedUserDataController = (username) => (dispatch) => {
 
 export const signOut = (resetState) => (dispatch) => {
   axios.post("/api/users/signout", {}).then((res) => {
-    if (window.location.pathname !== "/") {
-      window.location.href = "/";
-    }
+    window.location.href = "/";
 
     resetState();
   });

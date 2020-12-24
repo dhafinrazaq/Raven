@@ -11,7 +11,7 @@ import {
   UPDATE_PROJECT_IMAGE_SRC,
 } from "./types";
 import { getImgSource } from "../helpers/imageProcessing";
-import backendURI from "../../config";
+import backendURI from "../config";
 
 export const getProjects = () => async (dispatch) => {
   dispatch(setProjectsLoading());

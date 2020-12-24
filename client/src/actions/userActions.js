@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as types from "./types";
-import backendURI from "../../config";
+import backendURI from "../config";
 
 export const signUp = (userFormData, resetState, setError) => (dispatch) => {
   axios

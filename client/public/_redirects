@@ -1,4 +1,4 @@
-/api/users https://ravenapp-api.herokuapp.com/api/users/:splat 200
-/api/projects https://ravenapp-api.herokuapp.com/api/projects/:splat 200
-/search https://ravenapp-api.herokuapp.com/search/:splat 200
+/api/users/* https://ravenapp-api.herokuapp.com/api/users/:splat 200
+/api/projects/* https://ravenapp-api.herokuapp.com/api/projects/:splat 200
+/search/* https://ravenapp-api.herokuapp.com/search/:splat 200
 /*  /index.html  200

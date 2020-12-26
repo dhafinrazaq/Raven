@@ -11,7 +11,6 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
   Container,
   Form,
   Input,
@@ -104,6 +103,7 @@ export class AppNavbar extends Component {
                 <img
                   src="/RavenLogo.svg"
                   height="50"
+                  alt="Raven Logo"
                   width="50"
                   className="mr-3"
                 />

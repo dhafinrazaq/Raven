@@ -28,7 +28,7 @@ const signUpController = (req, res) => {
     }
 
     res.cookie("authentication", token, {
-      maxAge: keys.authTTL,
+      // maxAge: keys.authTTL,
       secure: false, // set to true if your using https
       httpOnly: true, // prevents XSS attacks
     });
@@ -107,7 +107,7 @@ const signInController = (req, res) => {
     }
 
     res.cookie("authentication", token, {
-      maxAge: keys.authTTL,
+      // maxAge: keys.authTTL,
       secure: false, // set to true if your using https
       httpOnly: true, // prevents XSS attacks
     });
@@ -157,21 +157,15 @@ const signOutController = (req, res) => {
 };
 
 const getUserDataController = (req, res) => {
-  const sendResponse = (user) => {
-    if (!user) {
-      return res
-        .status(404)
-        .json({ error: "User no longer exists in the database" });
-    }
+  const user = req.user;
 
-    return res.json(user);
-  };
+  if (!user) {
+    return res
+      .status(404)
+      .json({ error: "User no longer exists in the database" });
+  }
 
-  const getUserData = (filterForUserID) => {
-    userUtils.findUser(filterForUserID, false, sendResponse);
-  };
-
-  userUtils.verifyJWT(req.cookies.authentication, getUserData);
+  return res.json(user);
 };
 
 const getAnyUserDataController = (req, res) => {

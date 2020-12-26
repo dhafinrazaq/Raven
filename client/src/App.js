@@ -1,4 +1,3 @@
-import logo from "./RavenLogo.svg";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AppNavbar from "./components/AppNavbar";
@@ -18,6 +17,9 @@ import { connect } from "react-redux";
 class App extends Component {
   componentDidMount() {
     this.props.fetchUserData();
+    setInterval(() => {
+      this.props.fetchUserData();
+    }, 1800000); // check for expired jwt in cookie
   }
 
   render() {
@@ -81,7 +83,6 @@ class App extends Component {
 }
 
 App.propTypes = {
-  getUserData: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
 };
 

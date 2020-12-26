@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { getProject, getProjects } from "../actions/projectActions";
+import { getProject } from "../actions/projectActions";
 import { connect } from "react-redux";
 
 export class ProjectDescription extends Component {

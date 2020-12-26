@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
+const authMiddleware = require("../../middleware/auth-jwt");
 
 const router = express.Router();
 
@@ -24,25 +25,31 @@ router.get("/", (req, res) => {
 // @route POST api/projects
 // @desc create a project
 // @access public
-router.post("/", (req, res) => {
+router.post("/", authMiddleware, (req, res) => {
+  const user = req.user;
+
   const newProject = new Project({
     name: req.body.name,
     description: req.body.description,
-    author: req.body.authorId,
+    author: user.id,
   });
 
   newProject.save().then((project) => {
     res.json(project);
-    User.findById(req.body.authorId)
-      .then((author) => {
-        author.projects.push(project._id);
-        author.save();
-      })
-      .catch((err) => res.json(err));
+    user.projects.push(project._id);
+    user.save();
   });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", authMiddleware, (req, res) => {
+  const user = req.user;
+
+  user.projects = user.projects.filter((id) => {
+    return id !== req.params.id;
+  });
+
+  user.save();
+
   Project.findByIdAndDelete(req.params.id)
     .then(() => res.json({ msg: true }))
     .catch((err) => res.status(404).json({ success: false }));
@@ -63,7 +70,7 @@ router.get("/:id", async (req, res) => {
 // @route PUT api/projects/:id
 // @desc update a project
 // @access public
-router.put("/:id", async (req, res) => {
+router.put("/:id", authMiddleware, async (req, res) => {
   const putProjectWithPopulate = function (query, updated) {
     return Project.findByIdAndUpdate(query, updated, {
       returnOriginal: false,
@@ -80,14 +87,16 @@ const { promisify } = require("util");
 const pipeline = promisify(require("stream").pipeline);
 const upload = multer();
 
-router.post("/upload", upload.single("file"), async (req, res, next) => {
+router.post("/upload", authMiddleware, upload.single("file"), async (req, res, next) => {
   const {
     file,
     body: { id },
   } = req;
 
   if (file.detectedFileExtension != ".jpg")
-    next(new Error("invalid file type"));
+    return res
+      .status(400)
+      .json({ msg: "Invalid file type. The image must be of a .jpg format" });
 
   const fileName = id + file.detectedFileExtension;
 
@@ -111,7 +120,6 @@ router.post("/upload", upload.single("file"), async (req, res, next) => {
       contentType: "image/jpg",
     },
   });
-  // console.log(project);
   res.json(project);
 });
 

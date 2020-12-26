@@ -8,6 +8,8 @@ import {
   SEARCH_PROJECTS,
   EDIT_PROJECT_IMAGE,
   UPDATE_PROJECT_IMAGE_SRC,
+  EDIT_PROJECT_IMAGE_ERROR,
+  CLEAR_PROJECT_ERROR,
 } from "../actions/types";
 
 const initialState = {
@@ -75,6 +77,16 @@ const reducer = function (state = initialState, action) {
         loading: false,
         project: {},
         imageSrc: "",
+      };
+    case EDIT_PROJECT_IMAGE_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case CLEAR_PROJECT_ERROR:
+      return {
+        ...state,
+        error: "",
       };
     default:
       return state;

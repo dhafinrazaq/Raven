@@ -87,7 +87,9 @@ router.post("/upload", upload.single("file"), async (req, res, next) => {
   } = req;
 
   if (file.detectedFileExtension != ".jpg")
-    next(new Error("invalid file type"));
+    return res
+      .status(400)
+      .json({ msg: "Invalid file type. The image must be of a .jpg format" });
 
   const fileName = id + file.detectedFileExtension;
 

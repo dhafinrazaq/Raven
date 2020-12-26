@@ -29,28 +29,12 @@ export class ProjectList extends Component {
                     <div class="row">
                       <img
                         src={getImgSource(img)}
-                        class="figure-img img-fluid mx-auto"
+                        class="figure-img img-fluid mx-auto project-list-img"
                         alt="No image"
-                        style={{
-                          maxHeight: "200px",
-                          maxWidth: "200px",
-                          overflow: "hidden",
-                        }}
                       ></img>
                     </div>
 
-                    <h4
-                      class="text-center"
-                      style={{
-                        wordWrap: "break-word",
-                        width: "200px",
-                        overflow: "hidden",
-                        whiteSpace: "nowrap" /* Don't forget this one */,
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {name}
-                    </h4>
+                    <h4 class="text-center project-list-text">{name}</h4>
                   </figure>
                 </li>
               </Link>

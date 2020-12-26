@@ -20,29 +20,30 @@ export class SearchProjectList extends Component {
 
     return (
       <Container>
-        <h1 class="text-center">Search result : {this.props.query}</h1>
-        <ul className="project-list">
-          {projects.map(({ _id, name, img }) => (
-            <Link to={{ pathname: "/projects/" + _id }} key={_id}>
-              <li className="project-list-item">
-                <figure class="figure">
-                  <div class="row">
-                    <div class="col-md-8 offset-md-2">
+        <div className="row mb-2 pb-2">
+          <h1 class="text-center">Search result : {this.props.query}</h1>
+        </div>
+        <div className="row">
+          <ul className="project-list">
+            {projects.map(({ _id, name, img }) => (
+              <Link to={{ pathname: "/projects/" + _id + "?#" }} key={_id}>
+                <li className="project-list-item">
+                  <figure class="figure">
+                    <div class="row">
                       <img
                         src={getImgSource(img)}
-                        class="figure-img img-fluid mx-auto"
-                        alt="Nothing"
-                        style={{ maxHeight: "100%", maxWidth: "100%" }}
+                        class="figure-img img-fluid mx-auto project-list-img"
+                        alt="No image"
                       ></img>
                     </div>
-                  </div>
 
-                  <h4 class="text-center">{name}</h4>
-                </figure>
-              </li>
-            </Link>
-          ))}
-        </ul>
+                    <h4 class="text-center project-list-text">{name}</h4>
+                  </figure>
+                </li>
+              </Link>
+            ))}
+          </ul>
+        </div>
       </Container>
     );
   }

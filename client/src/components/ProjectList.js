@@ -22,22 +22,17 @@ export class ProjectList extends Component {
             <Link to={{ pathname: "/projects/" + _id + "?#" }} key={_id}>
               <li className="project-list-item">
                 <figure class="figure">
-                  <div class="row" style={{textAlign: "center"}}>
+                  <div class="row">
                     <div class="col-md-8 offset-md-2">
                       <img
                         src={getImgSource(img)}
                         class="figure-img img-fluid mx-auto"
                         alt="No image"
-                        style={{ maxHeight: "300px", maxWidth: "300px", textAlign : "center"}}
+                        style={{ maxHeight: "100%", maxWidth: "100%" }}
                       ></img>
                     </div>
                   </div>
-                  <h4
-                    class="text-center"
-                    style={{ wordWrap: "break-word", width: "300px" }}
-                  >
-                    {name}
-                  </h4>
+                  <h4 class="text-center">{name}</h4>
                 </figure>
               </li>
             </Link>

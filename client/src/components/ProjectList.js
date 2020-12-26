@@ -16,28 +16,47 @@ export class ProjectList extends Component {
 
     return (
       <Container>
-        <h1 class="text-center">Projects List</h1>
-        <ul className="project-list">
-          {projects.map(({ _id, name, img }) => (
-            <Link to={{ pathname: "/projects/" + _id + "?#" }} key={_id}>
-              <li className="project-list-item">
-                <figure class="figure">
-                  <div class="row">
-                    <div class="col-md-8 offset-md-2">
+        <div className="row mb-2 pb-2">
+          <h1 class="text-center">Projects List</h1>
+        </div>
+
+        <div className="row">
+          <ul className="project-list">
+            {projects.map(({ _id, name, img }) => (
+              <Link to={{ pathname: "/projects/" + _id + "?#" }} key={_id}>
+                <li className="project-list-item">
+                  <figure class="figure">
+                    <div class="row">
                       <img
                         src={getImgSource(img)}
                         class="figure-img img-fluid mx-auto"
                         alt="No image"
-                        style={{ maxHeight: "100%", maxWidth: "100%" }}
+                        style={{
+                          maxHeight: "200px",
+                          maxWidth: "200px",
+                          overflow: "hidden",
+                        }}
                       ></img>
                     </div>
-                  </div>
-                  <h4 class="text-center">{name}</h4>
-                </figure>
-              </li>
-            </Link>
-          ))}
-        </ul>
+
+                    <h4
+                      class="text-center"
+                      style={{
+                        wordWrap: "break-word",
+                        width: "200px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap" /* Don't forget this one */,
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {name}
+                    </h4>
+                  </figure>
+                </li>
+              </Link>
+            ))}
+          </ul>
+        </div>
       </Container>
     );
   }

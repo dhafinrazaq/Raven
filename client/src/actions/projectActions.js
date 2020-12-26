@@ -83,7 +83,7 @@ export const updateProjectImageSrc = (id) => async (dispatch) => {
   await axios.get(`/api/projects/${id}`).then((res) => {
     dispatch({
       type: UPDATE_PROJECT_IMAGE_SRC,
-      imageSrc: getImgSource(res.data),
+      imageSrc: getImgSource(res.data.img),
     });
   });
 };

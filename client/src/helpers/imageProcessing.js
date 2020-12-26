@@ -1,6 +1,4 @@
-export const getImgSource = (project) => {
-  const { img } = project;
-
+export const getImgSource = (img) => {
   if (!img) {
     return "https://imgur.com/Zeuoreq.png";
   }

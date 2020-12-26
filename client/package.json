@@ -44,6 +44,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://ravenapp-api.herokuapp.com:6375/",
+  "proxy": "http://localhost:5000",
   "secure": false
 }

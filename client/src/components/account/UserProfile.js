@@ -14,38 +14,42 @@ class UserProfile extends Component {
   render() {
     return (
       <Container>
-        <h1 class="text-center">
-          {" "}
-          {this.props.userObserved
-            ? this.props.userObserved.viewedUser.username
-            : ""}
-        </h1>
-        <ul className="project-list">
-          {this.props.userObserved
-            ? this.props.userObserved.viewedUser.projects.map(
-                ({ _id, name, img }) => (
-                  <Link to={{ pathname: "/projects/" + _id + "?#" }} key={_id}>
-                    <li className="project-list-item">
-                      <figure class="figure">
-                        <div class="row">
-                          <div class="col-md-8 offset-md-2">
+        <div className="row mb-2 pb-2">
+          <h1 class="text-center">
+            {" "}
+            {this.props.userObserved
+              ? this.props.userObserved.viewedUser.username
+              : ""}
+          </h1>
+        </div>
+        <div className="row">
+          <ul className="project-list">
+            {this.props.userObserved
+              ? this.props.userObserved.viewedUser.projects.map(
+                  ({ _id, name, img }) => (
+                    <Link
+                      to={{ pathname: "/projects/" + _id + "?#" }}
+                      key={_id}
+                    >
+                      <li className="project-list-item">
+                        <figure class="figure">
+                          <div class="row">
                             <img
                               src={getImgSource(img)}
-                              class="figure-img img-fluid mx-auto"
+                              class="figure-img img-fluid mx-auto project-list-img"
                               alt="No image"
-                              style={{ maxHeight: "100%", maxWidth: "100%" }}
                             ></img>
                           </div>
-                        </div>
 
-                        <h4 class="text-center">{name}</h4>
-                      </figure>
-                    </li>
-                  </Link>
+                          <h4 class="text-center project-list-text">{name}</h4>
+                        </figure>
+                      </li>
+                    </Link>
+                  )
                 )
-              )
-            : ""}
-        </ul>
+              : ""}
+          </ul>
+        </div>
       </Container>
     );
   }

@@ -65,7 +65,7 @@ export const editProject = (id, project) => (dispatch) => {
 export const getSearchProjects = (query) => (dispatch) => {
   axios.get(`/api/search/${query}`).then((res) =>
     dispatch({
-      type: GET_PROJECTS,
+      type: SEARCH_PROJECTS,
       payload: res.data,
     })
   );
@@ -83,7 +83,7 @@ export const updateProjectImageSrc = (id) => async (dispatch) => {
   await axios.get(`/api/projects/${id}`).then((res) => {
     dispatch({
       type: UPDATE_PROJECT_IMAGE_SRC,
-      imageSrc: getImgSource(res.data),
+      imageSrc: getImgSource(res.data.img),
     });
   });
 };

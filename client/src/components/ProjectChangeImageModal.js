@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Modal, ModalHeader, ModalBody, FormGroup } from "reactstrap";
+import { Form, Modal, ModalHeader, ModalBody, FormGroup } from "reactstrap";
 
 import { connect } from "react-redux";
 import {
@@ -13,11 +13,10 @@ export class ProjectChangeImageModal extends Component {
   state = {
     modal: false,
     file: null,
-    img: "",
   };
 
   componentDidMount() {
-    this.props.getProject(this.props.id).then(() => {
+    this.props.getProject(this.props.project._id).then(() => {
       this.props.updateProjectImageSrc(this.props.project._id);
     });
   }
@@ -41,18 +40,24 @@ export class ProjectChangeImageModal extends Component {
     });
   };
 
+  handleChange = (e) => {
+    const file = e.target.files[0];
+    this.setState({ ...this.state, file: file });
+  };
+
   displayImage = () => {
     if (
       this.props.project.author &&
       this.props.currentUserId === this.props.project.author._id
     ) {
+      // enable toggling modal if current user is author
       return (
         <div>
           <div style={{ marginBottom: "2rem" }} onClick={this.toggle}>
             <img
               src={this.props.imageSrc}
               class="figure-img img-fluid mx-auto project-detail-image"
-              alt="Click here to change image"
+              alt="Click here to change ima"
               style={{ maxHeight: "200px", maxWidth: "200px" }}
             ></img>
           </div>
@@ -80,23 +85,20 @@ export class ProjectChangeImageModal extends Component {
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Change Project Poster</ModalHeader>
           <ModalBody>
-            <form action="#">
+            <Form action="#">
               <FormGroup>
                 <input
                   className="form-control-file"
                   type="file"
                   id="file"
                   accept=".jpg"
-                  onChange={(event) => {
-                    const file = event.target.files[0];
-                    this.setState({ ...this.state, file: file });
-                  }}
+                  onChange={this.handleChange}
                 ></input>
               </FormGroup>
               <button className="btn btn-primary" onClick={this.send}>
                 Submit
               </button>
-            </form>
+            </Form>
           </ModalBody>
         </Modal>
       </div>

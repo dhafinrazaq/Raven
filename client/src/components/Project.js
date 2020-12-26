@@ -16,16 +16,18 @@ import ProjectChangeImageModal from "./ProjectChangeImageModal";
 export class Project extends Component {
   componentDidMount() {
     this.props.getProject(this.props.id).then(() => {
-      this.props.updateProjectImageSrc(this.props.id);
+      this.props.updateProjectImageSrc(this.props.project._id);
     });
   }
 
   onDeleteClick = (id) => {
     this.props.deleteProject(id);
+
     window.location.href = "/";
   };
 
   displayEditAndDeleteButton = () => {
+    // only display when author is the current user
     if (
       this.props.project.author &&
       this.props.currentUserId === this.props.project.author._id

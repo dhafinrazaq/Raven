@@ -9,6 +9,8 @@ import {
   SEARCH_PROJECTS,
   EDIT_PROJECT_IMAGE,
   UPDATE_PROJECT_IMAGE_SRC,
+  EDIT_PROJECT_IMAGE_ERROR,
+  CLEAR_PROJECT_ERROR,
 } from "./types";
 import { getImgSource } from "../helpers/imageProcessing";
 
@@ -71,12 +73,20 @@ export const getSearchProjects = (query) => (dispatch) => {
   );
 };
 export const editProjectImage = (project) => async (dispatch) => {
-  await axios.post(`/api/projects/upload`, project).then((res) => {
-    dispatch({
-      type: EDIT_PROJECT_IMAGE,
-      payload: res.data,
+  await axios
+    .post(`/api/projects/upload`, project)
+    .then((res) => {
+      dispatch({
+        type: EDIT_PROJECT_IMAGE,
+        payload: res.data,
+      });
+    })
+    .catch((err, res) => {
+      dispatch({
+        type: EDIT_PROJECT_IMAGE_ERROR,
+        payload: err.response.data.msg,
+      });
     });
-  });
 };
 
 export const updateProjectImageSrc = (id) => async (dispatch) => {
@@ -85,5 +95,11 @@ export const updateProjectImageSrc = (id) => async (dispatch) => {
       type: UPDATE_PROJECT_IMAGE_SRC,
       imageSrc: getImgSource(res.data.img),
     });
+  });
+};
+
+export const clearProjectError = (id) => async (dispatch) => {
+  dispatch({
+    type: CLEAR_PROJECT_ERROR,
   });
 };

@@ -14,8 +14,6 @@
   align-items: center; /* vertically */
   /* and some item styling for clarity: */
 
-  margin: auto;
-
   outline-offset: -1px;
   width: 300px;
   height: 300px;

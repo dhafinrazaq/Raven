@@ -32,7 +32,6 @@ export class ProjectList extends Component {
                       ></img>
                     </div>
                   </div>
-
                   <h4 class="text-center">{name}</h4>
                 </figure>
               </li>

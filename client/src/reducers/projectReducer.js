@@ -5,6 +5,7 @@ import {
   DELETE_PROJECT,
   PROJECTS_LOADING,
   GET_PROJECT,
+  SEARCH_PROJECTS,
   EDIT_PROJECT_IMAGE,
   UPDATE_PROJECT_IMAGE_SRC,
 } from "../actions/types";
@@ -66,6 +67,14 @@ const reducer = function (state = initialState, action) {
       return {
         ...state,
         imageSrc: action.imageSrc,
+      };
+    case SEARCH_PROJECTS:
+      return {
+        ...state,
+        projects: action.payload,
+        loading: false,
+        project: {},
+        imageSrc: "",
       };
     default:
       return state;

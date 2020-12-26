@@ -23,6 +23,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         userDetail: action.payload,
+        isLoggedIn: true,
       };
 
     default:

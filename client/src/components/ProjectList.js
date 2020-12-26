@@ -4,29 +4,12 @@ import { connect } from "react-redux";
 import { getProjects } from "../actions/projectActions";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { getImgSource } from "../helpers/imageProcessing";
 
 export class ProjectList extends Component {
   componentDidMount() {
     this.props.getProjects();
   }
-
-  setImgSource = (imgBlob) => {
-    if (!imgBlob) {
-      return "https://imgur.com/Zeuoreq.png";
-    }
-
-    var base64Flag = "data:image/jpeg;base64,";
-
-    var imageStr = this.arrayBufferToBase64(imgBlob.data.data);
-    return base64Flag + imageStr;
-  };
-
-  arrayBufferToBase64 = (buffer) => {
-    var binary = "";
-    var bytes = [].slice.call(new Uint8Array(buffer));
-    bytes.forEach((b) => (binary += String.fromCharCode(b)));
-    return window.btoa(binary);
-  };
 
   render() {
     const { projects } = this.props;
@@ -39,18 +22,22 @@ export class ProjectList extends Component {
             <Link to={{ pathname: "/projects/" + _id + "?#" }} key={_id}>
               <li className="project-list-item">
                 <figure class="figure">
-                  <div class="row">
+                  <div class="row" style={{textAlign: "center"}}>
                     <div class="col-md-8 offset-md-2">
                       <img
-                        src={this.setImgSource(img)}
+                        src={getImgSource(img)}
                         class="figure-img img-fluid mx-auto"
                         alt="No image"
-                        style={{ maxHeight: "100%", maxWidth: "100%" }}
+                        style={{ maxHeight: "300px", maxWidth: "300px", textAlign : "center"}}
                       ></img>
                     </div>
                   </div>
-
-                  <h4 class="text-center">{name}</h4>
+                  <h4
+                    class="text-center"
+                    style={{ wordWrap: "break-word", width: "300px" }}
+                  >
+                    {name}
+                  </h4>
                 </figure>
               </li>
             </Link>

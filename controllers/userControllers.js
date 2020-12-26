@@ -178,11 +178,22 @@ const getUserDataController = (req, res) => {
 // };
 
 const getAnyUserDataController = (req, res) => {
+  const populateCriteria = {
+    path: "projects",
+    options: {
+      sort: { date: -1 },
+    },
+  };
+
   const sendResponse = (user) => {
     return res.json({ viewedUser: user });
   };
 
-  userUtils.populateUser({ username: req.params.username }, "projects", sendResponse);
+  userUtils.populateUser(
+    { username: req.params.username },
+    populateCriteria,
+    sendResponse
+  );
 };
 
 module.exports = {

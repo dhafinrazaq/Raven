@@ -9,6 +9,8 @@ import {
   SEARCH_PROJECTS,
   EDIT_PROJECT_IMAGE,
   UPDATE_PROJECT_IMAGE_SRC,
+  EDIT_PROJECT_IMAGE_ERROR,
+  CLEAR_PROJECT_ERROR,
 } from "./types";
 import { getImgSource } from "../helpers/imageProcessing";
 
@@ -65,25 +67,39 @@ export const editProject = (id, project) => (dispatch) => {
 export const getSearchProjects = (query) => (dispatch) => {
   axios.get(`/api/search/${query}`).then((res) =>
     dispatch({
-      type: GET_PROJECTS,
+      type: SEARCH_PROJECTS,
       payload: res.data,
     })
   );
 };
 export const editProjectImage = (project) => async (dispatch) => {
-  await axios.post(`/api/projects/upload`, project).then((res) => {
-    dispatch({
-      type: EDIT_PROJECT_IMAGE,
-      payload: res.data,
+  await axios
+    .post(`/api/projects/upload`, project)
+    .then((res) => {
+      dispatch({
+        type: EDIT_PROJECT_IMAGE,
+        payload: res.data,
+      });
+    })
+    .catch((err, res) => {
+      dispatch({
+        type: EDIT_PROJECT_IMAGE_ERROR,
+        payload: err.response.data.msg,
+      });
     });
-  });
 };
 
 export const updateProjectImageSrc = (id) => async (dispatch) => {
   await axios.get(`/api/projects/${id}`).then((res) => {
     dispatch({
       type: UPDATE_PROJECT_IMAGE_SRC,
-      imageSrc: getImgSource(res.data),
+      imageSrc: getImgSource(res.data.img),
     });
+  });
+};
+
+export const clearProjectError = (id) => async (dispatch) => {
+  dispatch({
+    type: CLEAR_PROJECT_ERROR,
   });
 };

@@ -1,4 +1,3 @@
-import logo from "./RavenLogo.svg";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AppNavbar from "./components/AppNavbar";
@@ -84,7 +83,6 @@ class App extends Component {
 }
 
 App.propTypes = {
-  getUserData: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
 };
 

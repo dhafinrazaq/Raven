@@ -30,7 +30,6 @@ router.get("/data", authMiddleware, userControllers.getUserDataController);
 // @route GET /:username
 // @desc get data of the user in the current session
 // @access public
-// router.get("/:username", userControllers.getAnyUserDataController);
 router.get("/:username", userControllers.getAnyUserDataController);
 
 module.exports = router;

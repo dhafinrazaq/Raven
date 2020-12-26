@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import {
   Card,
@@ -7,12 +7,8 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Button,
-  CardTitle,
   CardBody,
-  CardText,
   Row,
-  Col,
 } from "reactstrap";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";

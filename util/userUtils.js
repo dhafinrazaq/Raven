@@ -53,6 +53,14 @@ const findUser = (conditions, includePassword, callback) => {
     .then((user) => callback(user));
 };
 
+const populateUser = (conditions, populateRef, callback) => {
+  User.findOne(conditions)
+    .populate(populateRef)
+    .then((user) => {
+      callback(user);
+    });
+};
+
 const generateJWT = (userData, ttl, callback) => {
   const payload = {
     id: userData.id,
@@ -76,6 +84,7 @@ module.exports = {
   comparePassword,
   saveUser,
   findUser,
+  populateUser,
   generateJWT,
   verifyJWT,
 };

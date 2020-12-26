@@ -64,6 +64,7 @@ export const fetchUserData = () => async (dispatch) => {
       if (err.response.data.isExpired) {
         axios.post("/api/users/signout", {}).then((res) => {
           window.location.href = "/account";
+          alert("You have been signed out for security reasons")
         });
       }
     });

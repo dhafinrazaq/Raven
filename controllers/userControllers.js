@@ -7,7 +7,7 @@ const userUtils = require("../util/userUtils");
 // Get input validation functions
 const validateSignUpInput = require("../validators/signUpValidation");
 const validateSignInInput = require("../validators/signInValidation");
-const { call } = require("ramda");
+const User = require("../models/User");
 
 const signUpController = (req, res) => {
   // Form validation
@@ -168,19 +168,32 @@ const getUserDataController = (req, res) => {
   return res.json(user);
 };
 
+// const getAnyUserDataController = async (req, res) => {
+//   const getUserWithPopulate = (query) => {
+//     return User.findOne({ username: query }).populate("projects");
+//   };
+
+//   const result = await getUserWithPopulate(req.params.username);
+//   res.json({ viewedUser: result });
+// };
+
 const getAnyUserDataController = (req, res) => {
-  const sendResponse = (currentUser) => {
-    if (!currentUser) {
-      return res
-        .status(404)
-        .json({ error: "User does not exist in the database" });
-    }
-    currentUser.populate("projects").execPopulate();
-    console.log(currentUser.populate("projects"));
-    return res.json(currentUser);
+  const populateCriteria = {
+    path: "projects",
+    options: {
+      sort: { date: -1 },
+    },
   };
-  const conditionForUser = { username: req.params.username };
-  userUtils.findUser(conditionForUser, false, sendResponse);
+
+  const sendResponse = (user) => {
+    return res.json({ viewedUser: user });
+  };
+
+  userUtils.populateUser(
+    { username: req.params.username },
+    populateCriteria,
+    sendResponse
+  );
 };
 
 module.exports = {

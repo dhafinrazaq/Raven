@@ -18,6 +18,9 @@ import { connect } from "react-redux";
 class App extends Component {
   componentDidMount() {
     this.props.fetchUserData();
+    setInterval(() => {
+      this.props.fetchUserData();
+    }, 1800000); // check for expired jwt in cookie
   }
 
   render() {

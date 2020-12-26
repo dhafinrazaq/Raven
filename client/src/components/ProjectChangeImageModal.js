@@ -17,7 +17,7 @@ export class ProjectChangeImageModal extends Component {
   };
 
   componentDidMount() {
-    this.props.getProject(this.props.id).then(() => {
+    this.props.getProject(this.props.project._id).then(() => {
       this.props.updateProjectImageSrc(this.props.project._id);
     });
   }

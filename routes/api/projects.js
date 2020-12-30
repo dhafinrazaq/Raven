@@ -2,6 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const authMiddleware = require("../../middleware/auth-jwt");
+const projectDetailMiddleware = require("../../middleware/projectDetail");
 
 const router = express.Router();
 
@@ -11,6 +12,7 @@ const userUtils = require("../../util/userUtils");
 // project model
 const Project = require("../../models/Project");
 const User = require("../../models/User");
+const JoinApplication = require("../../models/JoinApplication");
 
 // @route GET api/projects
 // @desc get all projects
@@ -41,6 +43,8 @@ router.post("/", authMiddleware, (req, res) => {
   });
 });
 
+// @route DELETE api/projects/:id
+// @desc delete a project
 router.delete("/:id", authMiddleware, (req, res) => {
   const user = req.user;
 
@@ -87,40 +91,80 @@ const { promisify } = require("util");
 const pipeline = promisify(require("stream").pipeline);
 const upload = multer();
 
-router.post("/upload", authMiddleware, upload.single("file"), async (req, res, next) => {
-  const {
-    file,
-    body: { id },
-  } = req;
+router.post(
+  "/upload",
+  authMiddleware,
+  upload.single("file"),
+  async (req, res, next) => {
+    const {
+      file,
+      body: { id },
+    } = req;
 
-  if (file.detectedFileExtension != ".jpg")
-    return res
-      .status(400)
-      .json({ msg: "Invalid file type. The image must be of a .jpg format" });
+    if (file.detectedFileExtension != ".jpg")
+      return res
+        .status(400)
+        .json({ msg: "Invalid file type. The image must be of a .jpg format" });
 
-  const fileName = id + file.detectedFileExtension;
+    const fileName = id + file.detectedFileExtension;
 
-  await pipeline(
-    file.stream,
-    fs.createWriteStream(`${__dirname}/../../public/images/${fileName}`)
-  );
+    await pipeline(
+      file.stream,
+      fs.createWriteStream(`${__dirname}/../../public/images/${fileName}`)
+    );
 
-  const putProjectWithPopulate = function (query, updated) {
-    return Project.findByIdAndUpdate(query, updated, {
-      returnOriginal: false,
-      new: true,
-    }).populate("author");
-  };
+    const putProjectWithPopulate = function (query, updated) {
+      return Project.findByIdAndUpdate(query, updated, {
+        returnOriginal: false,
+        new: true,
+      }).populate("author");
+    };
 
-  const project = await putProjectWithPopulate(id, {
-    img: {
-      data: fs.readFileSync(
-        path.join(`${__dirname}/../../public/images/${fileName}`)
-      ),
-      contentType: "image/jpg",
-    },
-  });
-  res.json(project);
+    const project = await putProjectWithPopulate(id, {
+      img: {
+        data: fs.readFileSync(
+          path.join(`${__dirname}/../../public/images/${fileName}`)
+        ),
+        contentType: "image/jpg",
+      },
+    });
+    res.json(project);
+  }
+);
+
+// @route GET api/projects
+// @desc get all join project application forms
+router.get("/:id/join", (req, res) => {
+  JoinApplication.find()
+    .sort({ date: -1 })
+    .then((applications) => res.json(applications))
+    .catch((err) => res.status(404).json({ success: false }));
 });
+
+// @route POST api/projects/:id/join
+// @desc submit a join project application form
+router.post(
+  "/:id/join",
+  [authMiddleware, projectDetailMiddleware],
+  (req, res) => {
+    const user = req.user;
+    const project = req.project;
+    console.log("post router");
+
+    const newApplication = new JoinApplication({
+      applicant: user._id,
+      project: req.params.id,
+      answer: req.body.answer,
+    });
+
+    newApplication.save().then((application) => {
+      res.json(application);
+      user.applications.push(application._id);
+      user.save();
+      project.applications.push(application._id);
+      project.save();
+    });
+  }
+);
 
 module.exports = router;

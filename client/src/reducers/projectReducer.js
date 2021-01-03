@@ -1,18 +1,4 @@
-import {
-  GET_PROJECTS,
-  ADD_PROJECT,
-  EDIT_PROJECT,
-  DELETE_PROJECT,
-  PROJECTS_LOADING,
-  GET_PROJECT,
-  SEARCH_PROJECTS,
-  EDIT_PROJECT_IMAGE,
-  UPDATE_PROJECT_IMAGE_SRC,
-  EDIT_PROJECT_IMAGE_ERROR,
-  CLEAR_PROJECT_ERROR,
-  ADD_JOIN_APPLICATION,
-  ADD_JOIN_APPLICATION_ERROR,
-} from "../actions/types";
+import * as types from "../actions/types";
 
 const initialState = {
   projects: [],
@@ -24,7 +10,7 @@ const initialState = {
 
 const reducer = function (state = initialState, action) {
   switch (action.type) {
-    case GET_PROJECTS:
+    case types.GET_PROJECTS:
       return {
         ...state,
         projects: action.payload,
@@ -32,47 +18,47 @@ const reducer = function (state = initialState, action) {
         project: {},
         imageSrc: "",
       };
-    case DELETE_PROJECT:
+    case types.DELETE_PROJECT:
       return {
         ...state,
         projects: state.projects.filter(
           (project) => project._id !== action.payload
         ),
       };
-    case ADD_PROJECT:
+    case types.ADD_PROJECT:
       return {
         ...state,
         projects: [action.payload, ...state.projects],
       };
-    case EDIT_PROJECT:
+    case types.EDIT_PROJECT:
       return {
         ...state,
         projects: [action.payload, ...state.projects],
         project: action.payload,
       };
-    case PROJECTS_LOADING:
+    case types.PROJECTS_LOADING:
       return {
         ...state,
         loading: true,
       };
-    case GET_PROJECT:
+    case types.GET_PROJECT:
       return {
         ...state,
         project: action.payload,
         loading: false,
       };
-    case EDIT_PROJECT_IMAGE:
+    case types.EDIT_PROJECT_IMAGE:
       return {
         ...state,
         project: action.payload,
         loading: false,
       };
-    case UPDATE_PROJECT_IMAGE_SRC:
+    case types.UPDATE_PROJECT_IMAGE_SRC:
       return {
         ...state,
         imageSrc: action.imageSrc,
       };
-    case SEARCH_PROJECTS:
+    case types.SEARCH_PROJECTS:
       return {
         ...state,
         projects: action.payload,
@@ -80,24 +66,29 @@ const reducer = function (state = initialState, action) {
         project: {},
         imageSrc: "",
       };
-    case EDIT_PROJECT_IMAGE_ERROR:
+    case types.EDIT_PROJECT_IMAGE_ERROR:
       return {
         ...state,
         error: action.payload,
       };
-    case CLEAR_PROJECT_ERROR:
+    case types.CLEAR_PROJECT_ERROR:
       return {
         ...state,
         error: "",
       };
-    case ADD_JOIN_APPLICATION:
+    case types.ADD_JOIN_APPLICATION:
       return {
         ...state,
       };
-    case ADD_JOIN_APPLICATION_ERROR:
+    case types.ADD_JOIN_APPLICATION_ERROR:
       return {
         ...state,
         error: "Unable to apply for this project",
+      };
+    case types.GET_JOIN_APPLICATIONS:
+      return {
+        ...state,
+        joinApplicationList: action.payload,
       };
     default:
       return state;

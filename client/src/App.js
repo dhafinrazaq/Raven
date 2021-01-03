@@ -5,6 +5,7 @@ import SearchProjectList from "./components/SearchProjectList";
 import ProjectList from "./components/ProjectList";
 import Project from "./components/Project";
 import ProjectModal from "./components/ProjectModal";
+import JoinApplicationList from "./components/Project Detail/JoinApplicationList";
 import UserProfile from "./components/account/UserProfile";
 import SignIn from "./components/account/SignIn";
 import { Container } from "reactstrap";
@@ -44,6 +45,17 @@ class App extends Component {
               render={(props) => (
                 <React.Fragment>
                   <Project id={props.match.params.id}></Project>
+                </React.Fragment>
+              )}
+            />
+            <Route
+              exact
+              path="/projects/:id/join"
+              render={(props) => (
+                <React.Fragment>
+                  <JoinApplicationList
+                    id={props.match.params.id}
+                  ></JoinApplicationList>
                 </React.Fragment>
               )}
             />

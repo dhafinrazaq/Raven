@@ -26,6 +26,12 @@ const UserSchema = new Schema({
       ref: "project",
     },
   ],
+  projectsCollaborated: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "project",
+    },
+  ],
   applications: [
     {
       type: mongoose.Schema.Types.ObjectId,

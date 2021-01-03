@@ -1,11 +1,18 @@
 import { Container, Button } from "reactstrap";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getProjectJoinApplication } from "../../actions/projectActions";
+import {
+  getProjectJoinApplication,
+  acceptProjectJoinApplication,
+} from "../../actions/projectActions";
 
 class JoinApplication extends Component {
   state = {
     application: [],
+  };
+
+  handleAccept = () => {
+    this.props.acceptProjectJoinApplication(this.props.id, this.props.joinId);
   };
 
   componentDidMount() {
@@ -22,7 +29,7 @@ class JoinApplication extends Component {
     return (
       <div>
         {this.state.application.answer}
-        <Button>Accept</Button>
+        <Button onClick={this.handleAccept}>Accept</Button>
         <Button>Reject</Button>
       </div>
     );
@@ -33,6 +40,7 @@ const mapStateToProps = (state) => ({
   application: state.project.joinApplication,
 });
 
-export default connect(mapStateToProps, { getProjectJoinApplication })(
-  JoinApplication
-);
+export default connect(mapStateToProps, {
+  getProjectJoinApplication,
+  acceptProjectJoinApplication,
+})(JoinApplication);

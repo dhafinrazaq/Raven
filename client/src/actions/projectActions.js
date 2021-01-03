@@ -142,3 +142,22 @@ export const getProjectJoinApplication = (projectId, joinId) => (dispatch) => {
       });
     });
 };
+
+export const acceptProjectJoinApplication = (projectId, joinId) => (
+  dispatch
+) => {
+  axios
+    .post(`/api/projects/${projectId}/join/${joinId}/accept`)
+    .then((res) => {
+      dispatch({
+        type: types.ACCEPT_JOIN_APPLICATION,
+        payload: res.data,
+      });
+    })
+    .catch((err, res) => {
+      dispatch({
+        type: types.ACCEPT_JOIN_APPLICATION_ERROR,
+        payload: err.response.data.msg,
+      });
+    });
+};

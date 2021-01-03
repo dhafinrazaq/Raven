@@ -197,4 +197,30 @@ router.post(
   }
 );
 
+// @route POST api/projects/:id/join/:joinId/accept
+// @desc accept a join project application form, and add to contributors
+router.post(
+  "/:id/join/:joinId/accept",
+  [authMiddleware, projectDetailMiddleware],
+  (req, res) => {
+    console.log("hrereere");
+    const loggedInUser = req.user;
+    const project = req.project;
+
+    JoinApplication.findById(req.params.joinId)
+      .then((application) => {
+        User.findById(application.applicant)
+          .then((user) => {
+            user.projectsCollaborated.push(application.project.id);
+            user.save();
+          })
+          .catch((err) => res.status(404).json({ success: false }));
+        project.collaborators.push(application.id);
+        project.save();
+        res.json({ success: true });
+      })
+      .catch((err) => res.status(404).json({ success: false }));
+  }
+);
+
 module.exports = router;

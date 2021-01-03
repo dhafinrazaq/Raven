@@ -149,7 +149,6 @@ router.post(
   (req, res) => {
     const user = req.user;
     const project = req.project;
-    console.log("post router");
 
     const newApplication = new JoinApplication({
       applicant: user._id,

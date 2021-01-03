@@ -13,6 +13,7 @@ import {
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
+import JoinApplicationForm from "./Project Detail/JoinApplicationForm";
 
 export class ProjectContributorSidebar extends Component {
   state = {
@@ -60,6 +61,7 @@ export class ProjectContributorSidebar extends Component {
           <TabPane tabId="1">
             <Card>
               <CardBody>
+                <JoinApplicationForm></JoinApplicationForm>
                 <Link
                   to={{
                     pathname: "/account/" + projectAuthorUsername,

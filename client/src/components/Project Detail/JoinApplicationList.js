@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Container } from "reactstrap";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { getProjectJoinApplicationList } from "../../actions/projectActions";
 
 export class JoinApplicationList extends Component {
@@ -13,7 +13,7 @@ export class JoinApplicationList extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.applications !== this.state.applications) {
+    if (this.props.applications !== prevProps.applications) {
       this.setState({ ...this.state, applications: this.props.applications });
     }
   }
@@ -23,7 +23,10 @@ export class JoinApplicationList extends Component {
       <div>
         Hello
         {this.state.applications.map((application) => (
-          <div>{application.answer}</div>
+          <React.Fragment>
+            <Link>{application.answer}</Link>
+            <br></br>
+          </React.Fragment>
         ))}
       </div>
     );

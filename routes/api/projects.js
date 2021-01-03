@@ -163,12 +163,8 @@ router.get(
   "/:id/join/:joinId",
   [authMiddleware, projectDetailMiddleware],
   (req, res) => {
-    const user = req.user;
-    const project = req.project;
-
-    JoinApplication.find({ _id: req.params.joinId })
-      .sort({ date: -1 })
-      .then((applications) => res.json(applications))
+    JoinApplication.findById(req.params.joinId)
+      .then((application) => res.json(application))
       .catch((err) => res.status(404).json({ success: false }));
   }
 );

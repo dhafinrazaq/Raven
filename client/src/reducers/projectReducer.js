@@ -90,6 +90,11 @@ const reducer = function (state = initialState, action) {
         ...state,
         joinApplicationList: action.payload,
       };
+    case types.GET_JOIN_APPLICATION:
+      return {
+        ...state,
+        joinApplication: action.payload,
+      };
     default:
       return state;
   }

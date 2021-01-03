@@ -109,9 +109,9 @@ export const addJoinApplication = (id, application) => (dispatch) => {
     });
 };
 
-export const getProjectJoinApplicationList = (id) => (dispatch) => {
+export const getProjectJoinApplicationList = (projectId) => (dispatch) => {
   axios
-    .get(`/api/projects/${id}/join`)
+    .get(`/api/projects/${projectId}/join`)
     .then((res) => {
       dispatch({
         type: types.GET_JOIN_APPLICATIONS,
@@ -120,7 +120,24 @@ export const getProjectJoinApplicationList = (id) => (dispatch) => {
     })
     .catch((err, res) => {
       dispatch({
-        type: types.GET_JOIN_APPLICATIONS,
+        type: types.GET_JOIN_APPLICATIONS_ERROR,
+        payload: err.response.data.msg,
+      });
+    });
+};
+
+export const getProjectJoinApplication = (projectId, joinId) => (dispatch) => {
+  axios
+    .get(`/api/projects/${projectId}/join/${joinId}`)
+    .then((res) => {
+      dispatch({
+        type: types.GET_JOIN_APPLICATION,
+        payload: res.data,
+      });
+    })
+    .catch((err, res) => {
+      dispatch({
+        type: types.GET_JOIN_APPLICATION_ERROR,
         payload: err.response.data.msg,
       });
     });

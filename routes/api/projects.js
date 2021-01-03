@@ -141,6 +141,38 @@ router.get("/:id/join", (req, res) => {
     .catch((err) => res.status(404).json({ success: false }));
 });
 
+// @route GET api/projects/:id/join
+// @desc get all join project application forms related to the project
+router.get(
+  "/:id/join",
+  [authMiddleware, projectDetailMiddleware],
+  (req, res) => {
+    const user = req.user;
+    const project = req.project;
+
+    JoinApplication.find({ project: project.id })
+      .sort({ date: -1 })
+      .then((applications) => res.json(applications))
+      .catch((err) => res.status(404).json({ success: false }));
+  }
+);
+
+// @route GET api/projects/:id/join/:joinId
+// @desc get all join project application forms related to the project
+router.get(
+  "/:id/join/:joinId",
+  [authMiddleware, projectDetailMiddleware],
+  (req, res) => {
+    const user = req.user;
+    const project = req.project;
+
+    JoinApplication.find({ _id: req.params.joinId })
+      .sort({ date: -1 })
+      .then((applications) => res.json(applications))
+      .catch((err) => res.status(404).json({ success: false }));
+  }
+);
+
 // @route POST api/projects/:id/join
 // @desc submit a join project application form
 router.post(

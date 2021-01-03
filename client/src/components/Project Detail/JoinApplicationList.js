@@ -24,7 +24,13 @@ export class JoinApplicationList extends Component {
         Hello
         {this.state.applications.map((application) => (
           <React.Fragment>
-            <Link>{application.answer}</Link>
+            <Link
+              to={{
+                pathname: `/projects/${this.props.id}/join/${application._id}`,
+              }}
+            >
+              {application.answer}
+            </Link>
             <br></br>
           </React.Fragment>
         ))}

@@ -11,23 +11,13 @@ import {
 } from "reactstrap";
 
 import { connect } from "react-redux";
-import { getProject, editProject } from "../../actions/projectActions";
+import { addJoinApplication } from "../../actions/projectActions";
 
 export class JoinApplicationForm extends Component {
   state = {
     modal: false,
     answer: "",
   };
-
-  componentDidMount() {
-    // this.props.getProject(this.props.id).then(() => {
-    //   this.setState({
-    //     ...this.state,
-    //     name: this.props.project.project.name,
-    //     description: this.props.project.project.description,
-    //   });
-    // });
-  }
 
   toggle = () => {
     this.setState({
@@ -42,12 +32,11 @@ export class JoinApplicationForm extends Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    const newProject = {
-      name: this.state.name,
-      description: this.state.description,
+    const newApplication = {
+      answer: this.state.answer,
     };
 
-    this.props.editProject(this.props.project.project._id, newProject);
+    this.props.addJoinApplication(this.props.project._id, newApplication);
 
     // close modal
     this.toggle();
@@ -67,7 +56,7 @@ export class JoinApplicationForm extends Component {
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Join Project</ModalHeader>
           <ModalBody>
-            <Form onSubmit={this.onSubmit} encType="multipart/form-data">
+            <Form onSubmit={this.onSubmit}>
               <FormGroup>
                 <Label for="answer">Answer</Label>
                 <Input
@@ -92,9 +81,9 @@ export class JoinApplicationForm extends Component {
 }
 
 const mapsStateToProps = (state) => ({
-  project: state.project,
+  project: state.project.project,
 });
 
-export default connect(mapsStateToProps, { getProject, editProject })(
+export default connect(mapsStateToProps, { addJoinApplication })(
   JoinApplicationForm
 );

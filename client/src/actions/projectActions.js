@@ -11,6 +11,8 @@ import {
   UPDATE_PROJECT_IMAGE_SRC,
   EDIT_PROJECT_IMAGE_ERROR,
   CLEAR_PROJECT_ERROR,
+  ADD_JOIN_APPLICATION,
+  ADD_JOIN_APPLICATION_ERROR,
 } from "./types";
 import { getImgSource } from "../helpers/imageProcessing";
 
@@ -102,4 +104,22 @@ export const clearProjectError = (id) => async (dispatch) => {
   dispatch({
     type: CLEAR_PROJECT_ERROR,
   });
+};
+
+export const addJoinApplication = (id, application) => (dispatch) => {
+  console.log("here");
+  axios
+    .post(`/api/projects/${id}/join`, application)
+    .then((res) => {
+      dispatch({
+        type: ADD_JOIN_APPLICATION,
+        payload: res.data,
+      });
+    })
+    .catch((err, res) => {
+      dispatch({
+        type: ADD_JOIN_APPLICATION_ERROR,
+        payload: err.response.data.msg,
+      });
+    });
 };

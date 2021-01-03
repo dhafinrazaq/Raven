@@ -151,18 +151,21 @@ router.post(
     const project = req.project;
 
     const newApplication = new JoinApplication({
-      applicant: user._id,
+      applicant: user.id,
       project: req.params.id,
       answer: req.body.answer,
     });
 
-    newApplication.save().then((application) => {
-      res.json(application);
-      user.applications.push(application._id);
-      user.save();
-      project.applications.push(application._id);
-      project.save();
-    });
+    newApplication
+      .save()
+      .then((application) => {
+        res.json(application);
+        user.applications.push(application.id);
+        user.save();
+        project.applications.push(application.id);
+        project.save();
+      })
+      .catch((err) => res.status(404).json({ success: false }));
   }
 );
 

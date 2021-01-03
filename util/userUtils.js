@@ -50,7 +50,8 @@ const findUser = (conditions, includePassword, callback) => {
 
   User.findOne(conditions)
     .select(toSelect)
-    .then((user) => callback(user));
+    .then((user) => callback(user))
+    .catch((err) => console.log(err));
 };
 
 const populateUser = (conditions, populateRef, callback) => {

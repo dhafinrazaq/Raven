@@ -13,7 +13,6 @@ module.exports = (req, res, next) => {
     const setUser = (user) => {
       req.user = user;
       next();
-      tgftg;
     };
 
     const getUserData = (filterForUserID) => {

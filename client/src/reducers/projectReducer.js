@@ -10,6 +10,8 @@ import {
   UPDATE_PROJECT_IMAGE_SRC,
   EDIT_PROJECT_IMAGE_ERROR,
   CLEAR_PROJECT_ERROR,
+  ADD_JOIN_APPLICATION,
+  ADD_JOIN_APPLICATION_ERROR,
 } from "../actions/types";
 
 const initialState = {
@@ -87,6 +89,15 @@ const reducer = function (state = initialState, action) {
       return {
         ...state,
         error: "",
+      };
+    case ADD_JOIN_APPLICATION:
+      return {
+        ...state,
+      };
+    case ADD_JOIN_APPLICATION_ERROR:
+      return {
+        ...state,
+        error: "Unable to apply for this project",
       };
     default:
       return state;

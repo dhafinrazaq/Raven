@@ -95,6 +95,11 @@ const reducer = function (state = initialState, action) {
         ...state,
         joinApplication: action.payload,
       };
+    case types.GET_PROJECT_COLLABORATORS:
+      return {
+        ...state,
+        collaborators: action.payload,
+      };
     default:
       return state;
   }

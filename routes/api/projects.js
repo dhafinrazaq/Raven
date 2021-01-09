@@ -203,7 +203,6 @@ router.post(
   "/:id/join/:joinId/accept",
   [authMiddleware, projectDetailMiddleware],
   (req, res) => {
-    console.log("hrereere");
     const loggedInUser = req.user;
     const project = req.project;
 
@@ -211,15 +210,36 @@ router.post(
       .then((application) => {
         User.findById(application.applicant)
           .then((user) => {
-            user.projectsCollaborated.push(application.project.id);
+            user.projectsCollaborated.push(application.project);
             user.save();
           })
           .catch((err) => res.status(404).json({ success: false }));
-        project.collaborators.push(application.id);
+        project.collaborators.push(application.applicant._id);
         project.save();
         res.json({ success: true });
       })
       .catch((err) => res.status(404).json({ success: false }));
+  }
+);
+
+// @route GET api/projects/:id/collaborators
+// @desc get the list of collaborators
+router.get(
+  "/:id/collaborators",
+  [authMiddleware, projectDetailMiddleware],
+  (req, res) => {
+    const project = req.project;
+
+    Project.findById(project.id)
+      .populate("collaborators")
+      .exec((err, populatedProject) => {
+        if (err) {
+          console.log(err);
+        }
+        res.json({
+          collaborators: populatedProject.collaborators,
+        });
+      });
   }
 );
 

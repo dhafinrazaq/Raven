@@ -161,3 +161,21 @@ export const acceptProjectJoinApplication = (projectId, joinId) => (
       });
     });
 };
+
+export const getProjectCollaborators = (projectId) => (dispatch) => {
+  axios
+    .get(`/api/projects/${projectId}/collaborators`)
+    .then((res) => {
+      console.log("get");
+      dispatch({
+        type: types.GET_PROJECT_COLLABORATORS,
+        payload: res.data,
+      });
+    })
+    .catch((err, res) => {
+      dispatch({
+        type: types.GET_PROJECT_COLLABORATORS_ERROR,
+        payload: err.response.data.msg,
+      });
+    });
+};

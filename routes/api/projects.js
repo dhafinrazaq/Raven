@@ -184,6 +184,16 @@ router.post(
       answer: req.body.answer,
     });
 
+    console.log(user.id);
+
+    Project.find({ collaborators: user.id }).then((collaborator) => {
+      res.status(404).json({ success: false });
+    });
+
+    Project.find({ author: user.id }).then((author) => {
+      res.status(404).json({ success: false });
+    });
+
     newApplication
       .save()
       .then((application) => {

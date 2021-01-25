@@ -8,17 +8,21 @@ import {
   NavItem,
   NavLink,
   CardBody,
-  Row,
+  Alert,
 } from "reactstrap";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
 import JoinApplicationForm from "./Project Detail/JoinApplicationForm";
-import { getProjectCollaborators } from "../actions/projectActions";
+import {
+  getProjectCollaborators,
+  clearProjectError,
+} from "../actions/projectActions";
 
 export class ProjectContributorSidebar extends Component {
   state = {
     activeTab: "1",
+    isErrorVisible: true,
   };
 
   componentDidMount() {
@@ -28,9 +32,6 @@ export class ProjectContributorSidebar extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log("update");
-    console.log(this.props.project);
-    console.log(prevProps.project);
     if (this.props.project !== prevProps.project) {
       console.log(this.props.project._id);
       this.props.getProjectCollaborators(this.props.project._id);
@@ -45,6 +46,11 @@ export class ProjectContributorSidebar extends Component {
     this.setState({ ...this.state, activeTab: tab });
   };
 
+  onDismiss = () => {
+    this.setState({ ...this.state, isErrorVisible: false });
+    this.props.clearProjectError();
+  };
+
   render() {
     const projectAuthorUsername = this.props.projectAuthor
       ? this.props.projectAuthor.username
@@ -52,6 +58,16 @@ export class ProjectContributorSidebar extends Component {
 
     return (
       <div>
+        {this.props.error && (
+          <Alert
+            color="info"
+            isOpen={this.state.isErrorVisible}
+            toggle={this.onDismiss}
+          >
+            {this.props.error}
+          </Alert>
+        )}
+
         <Nav tabs>
           <NavItem>
             <NavLink
@@ -109,8 +125,10 @@ const mapStateToProps = (state) => ({
   project: state.project.project,
   projectAuthor: state.project.project.author,
   projectCollaborators: state.project.collaborators,
+  error: state.project.error,
 });
 
-export default connect(mapStateToProps, { getProjectCollaborators })(
-  ProjectContributorSidebar
-);
+export default connect(mapStateToProps, {
+  getProjectCollaborators,
+  clearProjectError,
+})(ProjectContributorSidebar);

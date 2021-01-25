@@ -86,7 +86,8 @@ export const updateProjectImageSrc = (id) => async (dispatch) => {
   });
 };
 
-export const clearProjectError = (id) => async (dispatch) => {
+export const clearProjectError = () => async (dispatch) => {
+  console.log("error cleared");
   dispatch({
     type: types.CLEAR_PROJECT_ERROR,
   });
@@ -102,6 +103,7 @@ export const addJoinApplication = (id, application) => (dispatch) => {
       });
     })
     .catch((err, res) => {
+      console.log("unable to join");
       dispatch({
         type: types.ADD_JOIN_APPLICATION_ERROR,
         payload: err.response.data.msg,

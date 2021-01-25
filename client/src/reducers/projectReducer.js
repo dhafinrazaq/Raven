@@ -83,7 +83,8 @@ const reducer = function (state = initialState, action) {
     case types.ADD_JOIN_APPLICATION_ERROR:
       return {
         ...state,
-        error: "Unable to apply for this project",
+        error:
+          "Unable to apply for this project. Check if you are the author or are already a collaborator",
       };
     case types.GET_JOIN_APPLICATIONS:
       return {

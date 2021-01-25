@@ -167,6 +167,7 @@ export const getProjectCollaborators = (projectId) => (dispatch) => {
     .get(`/api/projects/${projectId}/collaborators`)
     .then((res) => {
       console.log("get");
+      console.log(res.data);
       dispatch({
         type: types.GET_PROJECT_COLLABORATORS,
         payload: res.data,

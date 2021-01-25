@@ -29,7 +29,10 @@ export class ProjectContributorSidebar extends Component {
 
   componentDidUpdate(prevProps) {
     console.log("update");
+    console.log(this.props.project);
+    console.log(prevProps.project);
     if (this.props.project !== prevProps.project) {
+      console.log(this.props.project._id);
       this.props.getProjectCollaborators(this.props.project._id);
     }
   }
@@ -60,44 +63,37 @@ export class ProjectContributorSidebar extends Component {
               Developers
             </NavLink>
           </NavItem>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === "2" })}
-              onClick={() => {
-                this.toggle("2");
-              }}
-            >
-              Investors
-            </NavLink>
-          </NavItem>
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="1">
             <Card>
               <CardBody>
                 <JoinApplicationForm></JoinApplicationForm>
-                <Link
-                  to={{
-                    pathname: "/account/" + projectAuthorUsername,
-                  }}
-                >
-                  {projectAuthorUsername}
-                </Link>
-                {this.props.projectCollaborators !== undefined &&
-                  this.props.projectCollaborators.map((collaborator) => (
+                <ul>
+                  <li>
                     <Link
                       to={{
-                        pathname: "/account/" + collaborator.username,
+                        pathname: "/account/" + projectAuthorUsername,
                       }}
                     >
-                      {collaborator.username}
+                      {projectAuthorUsername}
                     </Link>
-                  ))}
+                  </li>
+                  {this.props.projectCollaborators &&
+                    this.props.projectCollaborators.map((collaborator) => (
+                      <li>
+                        <Link
+                          to={{
+                            pathname: "/account/" + collaborator.username,
+                          }}
+                        >
+                          {collaborator.username}
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
               </CardBody>
             </Card>
-          </TabPane>
-          <TabPane tabId="2">
-            <Row></Row>
           </TabPane>
         </TabContent>
       </div>
@@ -110,6 +106,7 @@ ProjectContributorSidebar.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+  project: state.project.project,
   projectAuthor: state.project.project.author,
   projectCollaborators: state.project.collaborators,
 });

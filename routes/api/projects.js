@@ -236,9 +236,7 @@ router.get(
         if (err) {
           console.log(err);
         }
-        res.json({
-          collaborators: populatedProject.collaborators,
-        });
+        res.json(populatedProject.collaborators);
       });
   }
 );
